@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ChevronRight, Home } from 'lucide-react';
+import { ChevronRight, Home, Menu, X } from 'lucide-react';
 
 export default function ABYnniovLayout() {
   const navigate = useNavigate();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
     <div className="min-h-screen flex flex-col bg-white">
@@ -39,15 +40,72 @@ export default function ABYnniovLayout() {
 
             {/* Mobile Menu Button */}
             <button 
-              onClick={() => navigate('/')}
-              className="md:hidden text-gray-600 hover:text-gray-900"
-              title="Retour"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="md:hidden text-gray-600 hover:text-gray-900 p-2"
+              title="Menu"
             >
-              <ChevronRight size={24} />
+              {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
           </div>
         </div>
       </header>
+
+      {/* Mobile Menu Dropdown */}
+      {mobileMenuOpen && (
+        <motion.div
+          className="md:hidden bg-white border-b border-gray-200 px-4 py-4"
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+        >
+          <div className="space-y-3">
+            <a 
+              href="/filiales/ab-ynnov" 
+              className="block px-3 py-2 text-gray-700 hover:text-blue-600 transition"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              Accueil
+            </a>
+            <a 
+              href="/filiales/ab-ynnov/about" 
+              className="block px-3 py-2 text-gray-700 hover:text-blue-600 transition"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              À propos
+            </a>
+            <a 
+              href="/filiales/ab-ynnov/activities" 
+              className="block px-3 py-2 text-gray-700 hover:text-blue-600 transition"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              Activités
+            </a>
+            <a 
+              href="/filiales/ab-ynnov/perspectives" 
+              className="block px-3 py-2 text-gray-700 hover:text-blue-600 transition"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              Perspectives
+            </a>
+            <a 
+              href="/filiales/ab-ynnov/contact" 
+              className="block px-3 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              Contact
+            </a>
+            <button
+              onClick={() => {
+                navigate('/');
+                setMobileMenuOpen(false);
+              }}
+              className="w-full text-left px-3 py-2 text-gray-600 hover:text-gray-900 flex items-center gap-2"
+            >
+              <Home size={18} />
+              Retour INTERSEC
+            </button>
+          </div>
+        </motion.div>
+      )}
 
       {/* Breadcrumb */}
       <div className="px-4 md:px-8 lg:px-16 py-3 bg-gray-50 border-b border-gray-200">
