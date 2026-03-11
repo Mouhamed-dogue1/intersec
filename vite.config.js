@@ -5,6 +5,11 @@ export default defineConfig({
   plugins: [react()],
   server: {
     port: 3000,
-    open: true
+    open: true,
+    middlewareMode: false,
+    historyApiFallback: true
+  },
+  preview: {
+    port: 3000
   }
 })
