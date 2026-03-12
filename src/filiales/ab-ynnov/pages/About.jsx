@@ -1,13 +1,46 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Target, Eye, Heart, Zap, CheckCircle } from 'lucide-react';
+import { Target, Lightbulb, Globe, TrendingUp, Award, Users } from 'lucide-react';
 
 export default function ABYnniovAbout() {
+  const values = [
+    {
+      icon: Target,
+      title: "Objectifs Clairs",
+      description: "Des buts stratégiques bien définis pour chaque secteur"
+    },
+    {
+      icon: Lightbulb,
+      title: "Innovation",
+      description: "Recherche constante de solutions novatrices et durables"
+    },
+    {
+      icon: Globe,
+      title: "Diversité",
+      description: "Un portefeuille multisectoriel fort et complémentaire"
+    },
+    {
+      icon: TrendingUp,
+      title: "Croissance",
+      description: "Développement continu et rentabilité durable"
+    },
+    {
+      icon: Award,
+      title: "Excellence",
+      description: "Standards de qualité élevés dans tous nos domaines"
+    },
+    {
+      icon: Users,
+      title: "Partenariat",
+      description: "Relations durables avec nos clients et fournisseurs"
+    }
+  ];
+
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: { staggerChildren: 0.2 }
+      transition: { staggerChildren: 0.15 }
     }
   };
 
@@ -17,185 +50,200 @@ export default function ABYnniovAbout() {
   };
 
   return (
-    <div className="min-h-screen bg-white">
-      {/* Hero */}
-      <section className="relative py-32 px-4 md:px-8 lg:px-16 bg-gradient-to-br from-blue-600 via-blue-700 to-blue-900 text-white overflow-hidden">
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-0 right-0 w-96 h-96 bg-white rounded-full blur-3xl" />
-        </div>
+    <div className="min-h-screen bg-gradient-to-b from-white via-blue-50 to-white overflow-hidden">
+      {/* Animated Background */}
+      <div className="fixed inset-0 -z-10 overflow-hidden">
+        <motion.div
+          className="absolute top-20 right-10 w-96 h-96 bg-blue-200 rounded-full mix-blend-multiply filter blur-3xl opacity-15"
+          animate={{ y: [0, 80, 0] }}
+          transition={{ duration: 12, repeat: Infinity }}
+        />
+        <motion.div
+          className="absolute bottom-20 left-10 w-96 h-96 bg-blue-300 rounded-full mix-blend-multiply filter blur-3xl opacity-15"
+          animate={{ y: [0, -80, 0] }}
+          transition={{ duration: 14, repeat: Infinity, delay: 1 }}
+        />
+      </div>
 
-        <div className="max-w-4xl mx-auto text-center relative z-10">
+      {/* Header */}
+      <section className="pt-32 pb-16 px-4 text-center relative z-10">
+        <motion.div
+          initial={{ opacity: 0, y: -30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+        >
+          <h1 className="text-5xl md:text-6xl font-black mb-4 bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent">
+            À propos d'AB'YNNOV
+          </h1>
+          <div className="h-1 w-24 bg-gradient-to-r from-blue-600 to-blue-800 mx-auto mb-6 rounded-full" />
+        </motion.div>
+      </section>
+
+      {/* Mission Section */}
+      <section className="px-4 py-20 relative z-10">
+        <div className="max-w-4xl mx-auto">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
+            className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-2xl p-12 border border-blue-200"
           >
-            <h1 className="text-6xl md:text-7xl font-black mb-6">À propos</h1>
-            <p className="text-xl text-blue-100 max-w-2xl mx-auto">
-              Découvrez notre histoire, nos valeurs et notre vision stratégique
+            <h2 className="text-3xl font-bold text-gray-900 mb-6">Notre Mission</h2>
+            <p className="text-lg text-gray-700 leading-relaxed mb-4">
+              AB'YNNOV est un conglomérat multisectoriel leader, diversifié et innovant. Notre mission est de créer de la valeur durable en opérant efficacement dans plusieurs secteurs clés de l'économie.
+            </p>
+            <p className="text-lg text-gray-700 leading-relaxed">
+              Nous nous engageons à maintenir les plus hauts standards de qualité, d'éthique et de durabilité dans toutes nos activités commerciales, tout en contribuant au développement économique et social.
             </p>
           </motion.div>
         </div>
       </section>
 
-      {/* Présentation */}
-      <section className="py-32 px-4 md:px-8 lg:px-16">
-        <div className="max-w-4xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8 }}
-          >
-            <h2 className="text-5xl font-black mb-8 bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent">
-              Présentation
-            </h2>
-            <div className="space-y-6">
-              <p className="text-xl text-gray-700 leading-relaxed">
-                AB'YNNOV est une entreprise multisectorielle innovante, créée comme membre stratégique du Groupe INTERSEC. Nous opérons dans plusieurs domaines complémentaires pour créer une valeur ajoutée unique et durable.
-              </p>
-              <p className="text-xl text-gray-700 leading-relaxed">
-                Notre positionnement stratégique nous permet de proposer des solutions intégrées et synergiques à nos partenaires et clients, en tirant profit des complémentarités entre nos secteurs d'activité.
-              </p>
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Mission, Vision, Valeurs */}
-      <section className="py-32 px-4 md:px-8 lg:px-16 bg-gradient-to-br from-gray-50 to-white">
+      {/* Vision & Values */}
+      <section className="px-4 py-20 relative z-10">
         <div className="max-w-6xl mx-auto">
-          <motion.h2
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mb-16">
+            {/* Vision */}
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8 }}
+              className="bg-white rounded-2xl p-12 shadow-lg hover:shadow-xl transition-shadow"
+            >
+              <h3 className="text-2xl font-bold text-gray-900 mb-4 flex items-center gap-3">
+                <Lightbulb className="text-blue-600" size={28} />
+                Notre Vision
+              </h3>
+              <p className="text-gray-700 leading-relaxed">
+                Devenir un référent continental en matière d'excellence managériale, d'innovation durable et de création de valeur économique. Nous aspirons à être reconnus comme un partenaire de confiance et un moteur de développement dans chaque secteur où nous opérons.
+              </p>
+            </motion.div>
+
+            {/* Strategy */}
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8 }}
+              className="bg-white rounded-2xl p-12 shadow-lg hover:shadow-xl transition-shadow"
+            >
+              <h3 className="text-2xl font-bold text-gray-900 mb-4 flex items-center gap-3">
+                <Target className="text-blue-600" size={28} />
+                Notre Stratégie
+              </h3>
+              <p className="text-gray-700 leading-relaxed">
+                Une approche holistique combinant performance opérationnelle, innovation continue et durabilité. Nous investissons dans le capital humain, la technologie et l'innovation pour maintenir notre leadership et créer une valeur à long terme pour nos stakeholders.
+              </p>
+            </motion.div>
+          </div>
+
+          {/* Core Values Grid */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
-            className="text-5xl font-black text-center mb-16 bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent"
+            className="text-center mb-12"
           >
-            Nos Fondamentaux
-          </motion.h2>
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">
+              Nos Valeurs Fondamentales
+            </h2>
+            <div className="h-1 w-24 bg-gradient-to-r from-blue-600 to-blue-800 mx-auto rounded-full" />
+          </motion.div>
 
           <motion.div
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
             variants={containerVariants}
             initial="hidden"
             whileInView="visible"
-            className="grid md:grid-cols-3 gap-8"
+            viewport={{ once: true }}
           >
-            {/* Mission */}
-            <motion.div
-              variants={itemVariants}
-              whileHover={{ y: -10 }}
-              className="group"
-            >
-              <div className="absolute inset-0 bg-gradient-to-br from-blue-600 to-blue-700 rounded-2xl blur opacity-0 group-hover:opacity-100 transition duration-300" />
-              <div className="relative bg-white border-2 border-blue-200 group-hover:border-transparent rounded-2xl shadow-lg group-hover:shadow-2xl p-8 transition-all duration-300">
-                <div className="flex items-center gap-3 mb-4">
-                  <motion.div
-                    className="p-3 bg-gradient-to-br from-blue-500 to-blue-600 text-white rounded-lg"
-                    whileHover={{ rotate: 10 }}
-                  >
-                    <Target size={28} />
-                  </motion.div>
-                  <h3 className="text-2xl font-bold text-gray-900">Mission</h3>
-                </div>
-                <p className="text-gray-700 leading-relaxed">
-                  Créer de la valeur durable à travers une approche multisectorielle innovante, en mettant les partenariats et l'excellence opérationnelle au cœur de nos activités.
-                </p>
-              </div>
-            </motion.div>
-
-            {/* Vision */}
-            <motion.div
-              variants={itemVariants}
-              whileHover={{ y: -10 }}
-              className="group"
-            >
-              <div className="absolute inset-0 bg-gradient-to-br from-blue-600 to-blue-700 rounded-2xl blur opacity-0 group-hover:opacity-100 transition duration-300" />
-              <div className="relative bg-white border-2 border-blue-200 group-hover:border-transparent rounded-2xl shadow-lg group-hover:shadow-2xl p-8 transition-all duration-300">
-                <div className="flex items-center gap-3 mb-4">
-                  <motion.div
-                    className="p-3 bg-gradient-to-br from-blue-500 to-blue-600 text-white rounded-lg"
-                    whileHover={{ rotate: 10 }}
-                  >
-                    <Eye size={28} />
-                  </motion.div>
-                  <h3 className="text-2xl font-bold text-gray-900">Vision</h3>
-                </div>
-                <p className="text-gray-700 leading-relaxed">
-                  Devenir un acteur multisectoriel de référence, reconnu pour notre capacité à générer de l'impact économique et social dans nos domaines d'intervention.
-                </p>
-              </div>
-            </motion.div>
-
-            {/* Valeurs */}
-            <motion.div
-              variants={itemVariants}
-              whileHover={{ y: -10 }}
-              className="group"
-            >
-              <div className="absolute inset-0 bg-gradient-to-br from-blue-600 to-blue-700 rounded-2xl blur opacity-0 group-hover:opacity-100 transition duration-300" />
-              <div className="relative bg-white border-2 border-blue-200 group-hover:border-transparent rounded-2xl shadow-lg group-hover:shadow-2xl p-8 transition-all duration-300">
-                <div className="flex items-center gap-3 mb-4">
-                  <motion.div
-                    className="p-3 bg-gradient-to-br from-blue-500 to-blue-600 text-white rounded-lg"
-                    whileHover={{ rotate: 10 }}
-                  >
-                    <Heart size={28} />
-                  </motion.div>
-                  <h3 className="text-2xl font-bold text-gray-900">Valeurs</h3>
-                </div>
-                <ul className="text-gray-700 space-y-3">
-                  {['Excellence opérationnelle', 'Innovation continue', 'Intégrité et transparence', 'Responsabilité durable'].map((val, i) => (
-                    <li key={i} className="flex items-center gap-2">
-                      <CheckCircle size={18} className="text-blue-600 flex-shrink-0" />
-                      {val}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </motion.div>
+            {values.map((value, index) => {
+              const IconComponent = value.icon;
+              return (
+                <motion.div
+                  key={index}
+                  variants={itemVariants}
+                  className="group cursor-pointer"
+                >
+                  <div className="relative bg-white rounded-2xl p-8 shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
+                    <div className="absolute inset-0 bg-gradient-to-br from-blue-600 to-blue-800 opacity-0 group-hover:opacity-5 transition-opacity rounded-2xl" />
+                    
+                    <div className="relative">
+                      <div className="inline-flex items-center justify-center w-14 h-14 bg-blue-100 rounded-xl mb-4 group-hover:bg-blue-600 transition-colors duration-300">
+                        <IconComponent className="text-blue-600 group-hover:text-white transition-colors duration-300" size={28} />
+                      </div>
+                      <h3 className="text-xl font-bold text-gray-900 mb-2">
+                        {value.title}
+                      </h3>
+                      <p className="text-gray-600 text-sm leading-relaxed">
+                        {value.description}
+                      </p>
+                    </div>
+                  </div>
+                </motion.div>
+              );
+            })}
           </motion.div>
         </div>
       </section>
 
-      {/* Membre du Groupe INTERSEC */}
-      <section className="py-32 px-4 md:px-8 lg:px-16 bg-gradient-to-r from-blue-900 via-blue-800 to-blue-900 text-white relative overflow-hidden">
-        <div className="absolute inset-0 opacity-5">
-          <div className="absolute bottom-0 right-0 w-96 h-96 bg-white rounded-full blur-3xl" />
-        </div>
-
-        <div className="max-w-4xl mx-auto relative z-10">
+      {/* Key Statistics */}
+      <section className="px-4 py-20 relative z-10">
+        <div className="max-w-5xl mx-auto">
           <motion.div
-            initial={{ opacity: 0, x: 50 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            className="bg-gradient-to-r from-blue-600 to-blue-800 rounded-3xl p-12 md:p-16 text-white"
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8 }}
           >
-            <div className="flex items-center gap-4 mb-8">
-              <motion.div
-                className="p-3 bg-white/20 rounded-lg"
-                whileHover={{ scale: 1.1 }}
-              >
-                <Zap size={32} />
-              </motion.div>
-              <h2 className="text-4xl font-black">Membre du Groupe INTERSEC</h2>
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-8 text-center">
+              {[
+                { number: "8+", label: "Secteurs d'activité" },
+                { number: "10K+", label: "Employés" },
+                { number: "3", label: "Décennies d'avance" },
+                { number: "Continental", label: "Présence" }
+              ].map((stat, idx) => (
+                <motion.div
+                  key={idx}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ delay: idx * 0.1, duration: 0.6 }}
+                >
+                  <p className="text-4xl md:text-5xl font-black mb-2">
+                    {stat.number}
+                  </p>
+                  <p className="text-blue-100 text-sm md:text-base">
+                    {stat.label}
+                  </p>
+                </motion.div>
+              ))}
             </div>
-            
-            <p className="text-xl text-blue-100 leading-relaxed mb-6">
-              AB'YNNOV est une filiale stratégique du Groupe INTERSEC, bénéficiant de la synergie d'un groupe diversifié et expérimenté. Cette appartenance renforce notre crédibilité et nos capacités de déploiement.
-            </p>
-
-            <p className="text-xl text-blue-100 leading-relaxed">
-              Nous travaillons en étroite coordination avec INTERSEC et H2i pour créer des synergies et offrir des solutions intégrées à nos partenaires.
-            </p>
-
-            <motion.div
-              className="mt-8 inline-block"
-              whileHover={{ scale: 1.05 }}
-            >
-              <button className="px-8 py-3 bg-white text-blue-900 rounded-full font-bold hover:bg-blue-50 transition-all">
-                Découvrir le groupe INTERSEC
-              </button>
-            </motion.div>
           </motion.div>
         </div>
+      </section>
+
+      {/* CTA */}
+      <section className="px-4 py-20 relative z-10">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          className="max-w-3xl mx-auto text-center"
+        >
+          <h2 className="text-3xl font-bold text-gray-900 mb-4">
+            Intéressé par une collaboration?
+          </h2>
+          <p className="text-gray-600 mb-8 text-lg">
+            Découvrez comment AB'YNNOV peut créer de la valeur pour votre entreprise
+          </p>
+          <div className="flex gap-4 justify-center flex-wrap">
+            <button className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-2xl transition-all duration-300 hover:shadow-lg">
+              Nous Contacter
+            </button>
+            <button className="border-2 border-blue-600 text-blue-600 hover:bg-blue-50 font-bold py-3 px-8 rounded-2xl transition-all duration-300">
+              En Savoir Plus
+            </button>
+          </div>
+        </motion.div>
       </section>
     </div>
   );

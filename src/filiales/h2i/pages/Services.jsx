@@ -1,52 +1,64 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Users, Briefcase, FileText, Lightbulb } from 'lucide-react';
+import { Users, Briefcase, Search, Zap, CheckCircle, Award } from 'lucide-react';
 
 export default function H2iServices() {
   const services = [
     {
-      icon: Users,
-      title: 'Recrutement',
-      description: 'Identification et sélection de candidats qualifiés pour tous les secteurs',
+      id: 1,
+      title: "Recrutement",
+      image: "/img_service_h2i/Recrutement.jpg",
+      description: "Recrutement de talents qualifiés adaptés à votre organisation",
       details: [
-        'Profiling et sourcing ciblé',
-        'Assessment et évaluation',
-        'Présentation de candidats qualifiés',
-        'Suivi post-embauche'
-      ]
+        "Sourcing de candidats qualifiés",
+        "Tri et présélection des profils",
+        "Entretiens et évaluations",
+        "Suivi post-embauche"
+      ],
+      icon: Search,
+      color: "from-blue-600 to-cyan-600"
     },
     {
+      id: 2,
+      title: "Conseil RH",
+      image: "/img_service_h2i/Conseil RH.jpg",
+      description: "Stratégies et solutions en ressources humaines",
+      details: [
+        "Audit organisationnel",
+        "Gestion du changement",
+        "Développement des compétences",
+        "Culture d'entreprise"
+      ],
       icon: Briefcase,
-      title: 'Intérim',
-      description: 'Mise à disposition de personnel temporaire pour vos besoins urgents',
-      details: [
-        'Intérim cadre et non-cadre',
-        'Réponse rapide aux demandes',
-        'Staff professionnel et formé',
-        'Gestion administrative complète'
-      ]
+      color: "from-indigo-600 to-blue-600"
     },
     {
-      icon: FileText,
-      title: 'Audit Organisationnel',
-      description: 'Analyse des structures pour optimiser votre fonctionnement',
+      id: 3,
+      title: "Intérim",
+      image: "/img_service_h2i/Intérim.jpg",
+      description: "Solutions d'intérim flexibles et réactives",
       details: [
-        'Diagnostic des processus',
-        'Evaluation des pratiques RH',
-        'Recommandations stratégiques',
-        'Plan d\'action personnalisé'
-      ]
+        "Missions courte/long terme",
+        "Substitution et renfort d'équipes",
+        "Formation continues",
+        "Gestion administrative"
+      ],
+      icon: Users,
+      color: "from-purple-600 to-indigo-600"
     },
     {
-      icon: Lightbulb,
-      title: 'Conseil RH',
-      description: 'Accompagnement stratégique en gestion des ressources humaines',
+      id: 4,
+      title: "Audit Organisationnel",
+      image: "/img_service_h2i/Audit Organisationnel.jpg",
+      description: "Diagnostic complet de votre structure organisationnelle",
       details: [
-        'Stratégie RH talent',
-        'Gestion de la paie et avantages',
-        'Développement des compétences',
-        'Relations sociales'
-      ]
+        "Analyse des processus",
+        "Évaluation des compétences",
+        "Recommandations stratégiques",
+        "Plans d'amélioration"
+      ],
+      icon: CheckCircle,
+      color: "from-teal-600 to-green-600"
     }
   ];
 
@@ -60,76 +72,118 @@ export default function H2iServices() {
 
   const itemVariants = {
     hidden: { opacity: 0, y: 30 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.6 } }
+    visible: { opacity: 1, y: 0, transition: { duration: 0.7 } }
   };
 
   return (
-    <div className="min-h-screen bg-white">
-      {/* Hero */}
-      <section className="relative py-32 px-4 md:px-8 lg:px-16 bg-gradient-to-br from-green-600 via-green-700 to-blue-900 text-white overflow-hidden">
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-0 left-0 w-96 h-96 bg-white rounded-full blur-3xl" />
-          <div className="absolute bottom-0 right-0 w-96 h-96 bg-white rounded-full blur-3xl" />
-        </div>
+    <div className="min-h-screen bg-gradient-to-b from-white via-blue-50 to-white overflow-hidden">
+      {/* Animated Background */}
+      <div className="fixed inset-0 -z-10 overflow-hidden">
+        <motion.div
+          className="absolute top-20 right-10 w-96 h-96 bg-blue-300 rounded-full mix-blend-multiply filter blur-3xl opacity-20"
+          animate={{ y: [0, 80, 0], x: [0, 30, 0] }}
+          transition={{ duration: 12, repeat: Infinity }}
+        />
+        <motion.div
+          className="absolute bottom-20 left-10 w-96 h-96 bg-cyan-300 rounded-full mix-blend-multiply filter blur-3xl opacity-20"
+          animate={{ y: [0, -80, 0], x: [0, -30, 0] }}
+          transition={{ duration: 14, repeat: Infinity, delay: 1 }}
+        />
+        <motion.div
+          className="absolute top-1/2 left-1/2 w-72 h-72 bg-indigo-300 rounded-full mix-blend-multiply filter blur-3xl opacity-10"
+          animate={{ y: [0, 50, 0] }}
+          transition={{ duration: 16, repeat: Infinity, delay: 2 }}
+        />
+      </div>
 
-        <div className="max-w-4xl mx-auto text-center relative z-10">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-          >
-            <h1 className="text-6xl md:text-7xl font-black mb-6">Nos services</h1>
-            <p className="text-xl text-green-100">
-              Solutions complètes en gestion des ressources humaines
-            </p>
-          </motion.div>
-        </div>
+      {/* Header Section */}
+      <section className="pt-32 pb-16 px-4 text-center relative z-10">
+        <motion.div
+          initial={{ opacity: 0, y: -30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+        >
+          <h1 className="text-5xl md:text-6xl font-black mb-4 bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 bg-clip-text text-transparent">
+            Nos Services
+          </h1>
+          <div className="h-1 w-32 bg-gradient-to-r from-blue-600 to-indigo-600 mx-auto mb-6 rounded-full" />
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            Des solutions innovantes en ressources humaines pour optimiser votre capital humain
+          </p>
+        </motion.div>
       </section>
 
       {/* Services Grid */}
-      <section className="py-32 px-4 md:px-8 lg:px-16">
-        <div className="max-w-6xl mx-auto">
+      <section className="px-4 py-20 relative z-10">
+        <div className="max-w-7xl mx-auto">
           <motion.div
+            className="grid grid-cols-1 md:grid-cols-2 gap-8"
             variants={containerVariants}
             initial="hidden"
             whileInView="visible"
-            className="grid md:grid-cols-2 gap-8"
+            viewport={{ once: true }}
           >
-            {services.map((service, idx) => {
-              const Icon = service.icon;
+            {services.map((service) => {
+              const IconComponent = service.icon;
               return (
                 <motion.div
-                  key={idx}
+                  key={service.id}
                   variants={itemVariants}
-                  whileHover={{ y: -15, scale: 1.02 }}
-                  className="group"
+                  className="group cursor-pointer"
                 >
-                  <div className="absolute inset-0 bg-gradient-to-br from-green-400 to-blue-600 rounded-2xl blur opacity-0 group-hover:opacity-20 transition-all duration-500" />
-                  
-                  <div className="relative bg-white border-2 border-green-200 group-hover:border-green-400 rounded-2xl p-8 hover:shadow-2xl transition-all duration-300 h-full">
-                    <motion.div
-                      className="w-14 h-14 bg-gradient-to-br from-green-500 to-green-600 text-white rounded-xl flex items-center justify-center mb-6"
-                      whileHover={{ rotate: 10, scale: 1.1 }}
-                    >
-                      <Icon size={32} />
-                    </motion.div>
-                    
-                    <h3 className="text-2xl font-bold text-gray-900 mb-3">{service.title}</h3>
-                    <p className="text-gray-700 mb-6 leading-relaxed">{service.description}</p>
-                    
-                    <motion.ul
-                      className="space-y-2"
-                      initial={{ opacity: 0 }}
-                      whileInView={{ opacity: 1 }}
-                      transition={{ delay: 0.2 }}
-                    >
-                      {service.details.map((detail, i) => (
-                        <li key={i} className="flex items-start gap-2 text-gray-600 text-sm">
-                          <span className="text-green-600 font-bold mt-1">✓</span>
-                          <span>{detail}</span>
-                        </li>
-                      ))}
-                    </motion.ul>
+                  <div className="relative bg-white rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 h-full">
+                    {/* Gradient Overlay on Hover */}
+                    <div className={`absolute inset-0 bg-gradient-to-br ${service.color} opacity-0 group-hover:opacity-5 transition-opacity duration-300`} />
+
+                    {/* Image Section */}
+                    <div className="relative h-80 overflow-hidden bg-gray-100">
+                      <img
+                        src={service.image}
+                        alt={service.title}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                      
+                      {/* Service Title Overlay */}
+                      <div className="absolute bottom-0 left-0 right-0 p-6">
+                        <div className="flex items-center gap-3">
+                          <div className={`bg-gradient-to-br ${service.color} p-3 rounded-xl text-white`}>
+                            <IconComponent size={24} />
+                          </div>
+                          <h3 className="text-2xl font-bold text-white">
+                            {service.title}
+                          </h3>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Content Section */}
+                    <div className="p-8">
+                      <p className="text-gray-600 mb-6 text-lg">
+                        {service.description}
+                      </p>
+
+                      {/* Features List */}
+                      <div className="space-y-3 mb-6">
+                        {service.details.map((detail, idx) => (
+                          <motion.div
+                            key={idx}
+                            initial={{ opacity: 0, x: -10 }}
+                            whileInView={{ opacity: 1, x: 0 }}
+                            transition={{ delay: idx * 0.1 }}
+                            className="flex items-center gap-3"
+                          >
+                            <CheckCircle size={18} className="text-blue-600 flex-shrink-0" />
+                            <span className="text-gray-700">{detail}</span>
+                          </motion.div>
+                        ))}
+                      </div>
+
+                      {/* CTA Button */}
+                      <button className={`w-full bg-gradient-to-r ${service.color} text-white font-bold py-3 px-6 rounded-xl hover:shadow-lg transition-all duration-300 transform group-hover:scale-105`}>
+                        En savoir plus →
+                      </button>
+                    </div>
                   </div>
                 </motion.div>
               );
@@ -138,75 +192,70 @@ export default function H2iServices() {
         </div>
       </section>
 
-      {/* Advantages */}
-      <section className="py-32 px-4 md:px-8 lg:px-16 bg-gradient-to-br from-gray-50 to-green-50">
-        <div className="max-w-6xl mx-auto">
+      {/* Why Choose Us Section */}
+      <section className="px-4 py-20 relative z-10">
+        <div className="max-w-5xl mx-auto">
           <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
-            className="text-center mb-16"
+            className="text-center mb-12"
           >
-            <h2 className="text-5xl font-black mb-4 bg-gradient-to-r from-green-600 to-green-800 bg-clip-text text-transparent">
-              Pourquoi choisir H2i ?
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">
+              Pourquoi nous choisir?
             </h2>
-            <p className="text-xl text-gray-600">Avantages de notre partenariat</p>
+            <div className="h-1 w-24 bg-gradient-to-r from-blue-600 to-indigo-600 mx-auto rounded-full" />
           </motion.div>
 
           <motion.div
+            className="grid grid-cols-1 md:grid-cols-3 gap-8"
             variants={containerVariants}
             initial="hidden"
             whileInView="visible"
-            className="grid md:grid-cols-2 lg:grid-cols-3 gap-6"
+            viewport={{ once: true }}
           >
             {[
-              { title: 'Réactivité', desc: 'Réponse rapide à vos demandes' },
-              { title: 'Expertise', desc: 'Know-how éprouvé depuis des années' },
-              { title: 'Confidentialité', desc: 'Respect total de vos informations' },
-              { title: 'Réseau', desc: 'Accès à un large pool de talents' },
-              { title: 'Personnalisé', desc: 'Solutions adaptées à vos besoins' },
-              { title: 'Suivi', desc: 'Accompagnement complet du projet' }
-            ].map((adv, i) => (
-              <motion.div
-                key={i}
-                variants={itemVariants}
-                whileHover={{ scale: 1.05 }}
-                className="bg-white border border-green-200 rounded-xl p-6 text-center group hover:border-green-400 transition"
-              >
-                <motion.div
-                  className="w-12 h-12 bg-gradient-to-br from-green-500 to-green-600 text-white rounded-lg flex items-center justify-center mx-auto mb-3"
-                  whileHover={{ scale: 1.2, rotate: 10 }}
-                >
-                  <span className="font-bold">✓</span>
-                </motion.div>
-                <h4 className="font-bold text-gray-900 mb-2">{adv.title}</h4>
-                <p className="text-gray-700 text-sm">{adv.desc}</p>
+              { icon: Award, title: "Expertise", desc: "Équipe de professionnels du RH" },
+              { icon: Zap, title: "Réactivité", desc: "Solutions adaptées à vos besoins" },
+              { icon: Users, title: "Partenariat", desc: "Relations durables et de confiance" }
+            ].map((item, idx) => (
+              <motion.div key={idx} variants={itemVariants} className="text-center">
+                <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-blue-100 to-indigo-100 rounded-full mb-4">
+                  <item.icon className="text-blue-600" size={32} />
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 mb-2">{item.title}</h3>
+                <p className="text-gray-600">{item.desc}</p>
               </motion.div>
             ))}
           </motion.div>
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="py-32 px-4 md:px-8 lg:px-16 bg-gradient-to-r from-green-900 via-green-800 to-blue-900 text-white">
-        <div className="max-w-4xl mx-auto text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-          >
-            <h2 className="text-4xl font-black mb-6">Besoin d'aide pour le recrutement ?</h2>
-            <p className="text-lg text-green-100 mb-8">
-              Contactez notre équipe pour discuter de vos projets RH
+      {/* CTA Section */}
+      <section className="px-4 py-20 relative z-10">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.8 }}
+          className="max-w-4xl mx-auto"
+        >
+          <div className="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 rounded-3xl p-12 md:p-16 text-center text-white shadow-2xl">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+              Transformez votre gestion des talents
+            </h2>
+            <p className="text-lg mb-8 opacity-90 max-w-2xl mx-auto">
+              Découvrez comment nos solutions peuvent optimiser votre performance RH
             </p>
-            <a 
-              href="/filiales/h2i/contact"
-              className="inline-block px-12 py-4 bg-white text-green-700 rounded-full font-bold hover:bg-green-50 transition-all shadow-2xl"
-            >
-              Demander un service
-            </a>
-          </motion.div>
-        </div>
+            <div className="flex gap-4 justify-center flex-wrap">
+              <button className="bg-white text-blue-600 font-bold py-3 px-8 rounded-2xl hover:shadow-lg transition-all duration-300 hover:scale-105">
+                Contactez-nous
+              </button>
+              <button className="border-2 border-white text-white font-bold py-3 px-8 rounded-2xl hover:bg-white/10 transition-all duration-300">
+                Demander une démo
+              </button>
+            </div>
+          </div>
+        </motion.div>
       </section>
     </div>
   );
