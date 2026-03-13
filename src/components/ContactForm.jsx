@@ -1,18 +1,16 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Send, CheckCircle, AlertCircle } from 'lucide-react';
-import { contactService } from '../services/pocketbase';
+import { contactService, intersecContactService } from '../services/pocketbase';
 
-export default function ContactForm({ isPartnership = false }) {
+export default function ContactForm({ isPartnership = false, entityService = null }) {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
-    ...(isPartnership && {
-      company: '',
-      phone: '',
-      partnership_type: '',
-    }),
-    ...(isPartnership ? { subject: '' } : { subject: '' }),
+    phone: '',
+    company: '',
+    partnership_type: '',
+    subject: '',
     message: ''
   });
 
@@ -32,22 +30,37 @@ export default function ContactForm({ isPartnership = false }) {
     setLoading(true);
 
     try {
-      if (isPartnership) {
-        // Handle partnership request
-        // Note: You'll need to create partnership_requests collection in PocketBase
-        console.log('Partnership data:', formData);
-        setStatus({ type: 'success', message: 'Demande de partenariat envoyée avec succès!' });
-      } else {
-        // Handle contact form
-        await contactService.create(formData);
-        setStatus({ type: 'success', message: 'Message envoyé avec succès!' });
-      }
+      // Déterminer quel service utiliser
+      const dataToSend = {
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone || '',
+        company: formData.company || '',
+        partnership_type: formData.partnership_type || '',
+        message: formData.message
+      };
+
+      console.log('📤 Données envoyées à PocketBase:', dataToSend);
+
+      // Utiliser le service de l'entité si fourni, sinon utiliser intersecContactService
+      const service = entityService || intersecContactService;
+      
+      await service.create(dataToSend);
+      
+      setStatus({ 
+        type: 'success', 
+        message: isPartnership 
+          ? 'Demande de partenariat envoyée avec succès! L\'admin vous répondra bientôt.'
+          : 'Message envoyé avec succès! Nous vous répondrons sous peu.'
+      });
 
       // Reset form
       setFormData({
         name: '',
         email: '',
-        ...(isPartnership && { company: '', phone: '', partnership_type: '' }),
+        phone: '',
+        company: '',
+        partnership_type: '',
         subject: '',
         message: ''
       });
@@ -126,6 +139,24 @@ export default function ContactForm({ isPartnership = false }) {
           />
         </div>
 
+        {/* Phone (visible for partnership and filiales) */}
+        {isPartnership && (
+          <div>
+            <label className="block text-sm font-medium text-gray-900 mb-2">
+              Téléphone
+            </label>
+            <input
+              type="tel"
+              name="phone"
+              value={formData.phone}
+              onChange={handleChange}
+              required
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-intersec-green focus:border-transparent outline-none transition"
+              placeholder="+223 XXXX XXXX"
+            />
+          </div>
+        )}
+
         {/* Company (Partnership only) */}
         {isPartnership && (
           <div>
@@ -135,27 +166,11 @@ export default function ContactForm({ isPartnership = false }) {
             <input
               type="text"
               name="company"
-              value={formData.company || ''}
+              value={formData.company}
               onChange={handleChange}
+              required
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-intersec-green focus:border-transparent outline-none transition"
               placeholder="Nom de votre entreprise"
-            />
-          </div>
-        )}
-
-        {/* Phone (Partnership only) */}
-        {isPartnership && (
-          <div>
-            <label className="block text-sm font-medium text-gray-900 mb-2">
-              Téléphone
-            </label>
-            <input
-              type="tel"
-              name="phone"
-              value={formData.phone || ''}
-              onChange={handleChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-intersec-green focus:border-transparent outline-none transition"
-              placeholder="+223 XXXX XXXX"
             />
           </div>
         )}
@@ -168,16 +183,17 @@ export default function ContactForm({ isPartnership = false }) {
           {isPartnership ? (
             <select
               name="partnership_type"
-              value={formData.partnership_type || ''}
+              value={formData.partnership_type}
               onChange={handleChange}
+              required
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-intersec-green focus:border-transparent outline-none transition"
             >
               <option value="">Sélectionner un type</option>
-              <option value="investor">Investisseur</option>
-              <option value="supplier">Fournisseur</option>
-              <option value="distributor">Distributeur</option>
-              <option value="collaborator">Collaborateur</option>
-              <option value="other">Autre</option>
+              <option value="Investisseur">Investisseur</option>
+              <option value="Fournisseur">Fournisseur</option>
+              <option value="Distributeur">Distributeur</option>
+              <option value="Collaborateur">Collaborateur</option>
+              <option value="Autre">Autre</option>
             </select>
           ) : (
             <input

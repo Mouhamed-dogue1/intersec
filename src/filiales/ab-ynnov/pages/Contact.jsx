@@ -1,29 +1,71 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Mail, Phone, MapPin, Send, MessageCircle, Clock } from 'lucide-react';
+import { Mail, Phone, MapPin, Send, MessageCircle, Clock, AlertCircle, CheckCircle } from 'lucide-react';
+import { abYnnovContactService } from '../../../services/pocketbase';
 
 export default function ABYnniovContact() {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     phone: '',
+    company: '',
+    partnership_type: '',
     subject: '',
     message: ''
   });
 
-  const [submitted, setSubmitted] = useState(false);
+  const [status, setStatus] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // TODO: Intégrer avec PocketBase
-    console.log('Form submitted:', formData);
-    setSubmitted(true);
-    setTimeout(() => setSubmitted(false), 3000);
+    setLoading(true);
+    setStatus(null);
+
+    try {
+      const dataToSend = {
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone || '',
+        company: formData.company || '',
+        partnership_type: formData.partnership_type || '',
+        message: formData.message
+      };
+
+      await abYnnovContactService.create(dataToSend);
+
+      setStatus({ 
+        type: 'success', 
+        message: 'Message reçu ! Nous vous recontacterons bientôt.' 
+      });
+
+      // Reset form
+      setFormData({
+        name: '',
+        email: '',
+        phone: '',
+        company: '',
+        partnership_type: '',
+        subject: '',
+        message: ''
+      });
+
+      // Clear status after 5 seconds
+      setTimeout(() => setStatus(null), 5000);
+    } catch (error) {
+      console.error('Form submission error:', error);
+      setStatus({ 
+        type: 'error', 
+        message: 'Erreur lors de l\'envoi. Veuillez réessayer.' 
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   const containerVariants = {
@@ -164,6 +206,26 @@ export default function ABYnniovContact() {
             transition={{ duration: 0.8 }}
           >
             <form onSubmit={handleSubmit} className="space-y-6">
+              {/* Status Messages */}
+              {status && (
+                <motion.div
+                  className={`p-4 rounded-lg flex items-center gap-3 ${
+                    status.type === 'success'
+                      ? 'bg-green-50 border border-green-200 text-green-800'
+                      : 'bg-red-50 border border-red-200 text-red-800'
+                  }`}
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                >
+                  {status.type === 'success' ? (
+                    <CheckCircle size={20} />
+                  ) : (
+                    <AlertCircle size={20} />
+                  )}
+                  <span className="font-semibold">{status.message}</span>
+                </motion.div>
+              )}
+
               {/* Name */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
@@ -177,7 +239,8 @@ export default function ABYnniovContact() {
                   value={formData.name}
                   onChange={handleChange}
                   required
-                  className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-600 transition text-lg"
+                  disabled={loading}
+                  className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-600 transition text-lg disabled:opacity-50"
                   placeholder="Votre nom"
                 />
               </motion.div>
@@ -195,7 +258,8 @@ export default function ABYnniovContact() {
                   value={formData.email}
                   onChange={handleChange}
                   required
-                  className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-600 transition text-lg"
+                  disabled={loading}
+                  className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-600 transition text-lg disabled:opacity-50"
                   placeholder="votre@email.com"
                 />
               </motion.div>
@@ -212,7 +276,8 @@ export default function ABYnniovContact() {
                   name="phone"
                   value={formData.phone}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-600 transition text-lg"
+                  disabled={loading}
+                  className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-600 transition text-lg disabled:opacity-50"
                   placeholder="Votre téléphone"
                 />
               </motion.div>
@@ -230,7 +295,8 @@ export default function ABYnniovContact() {
                   value={formData.subject}
                   onChange={handleChange}
                   required
-                  className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-600 transition text-lg"
+                  disabled={loading}
+                  className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-600 transition text-lg disabled:opacity-50"
                   placeholder="Sujet de votre message"
                 />
               </motion.div>
@@ -247,8 +313,9 @@ export default function ABYnniovContact() {
                   value={formData.message}
                   onChange={handleChange}
                   required
+                  disabled={loading}
                   rows="6"
-                  className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-600 transition resize-none text-lg"
+                  className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-600 transition resize-none text-lg disabled:opacity-50"
                   placeholder="Votre message"
                 />
               </motion.div>
@@ -256,23 +323,23 @@ export default function ABYnniovContact() {
               {/* Submit Button */}
               <motion.button
                 type="submit"
+                disabled={loading}
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                className="w-full bg-gradient-to-r from-blue-600 to-blue-700 text-white py-4 rounded-lg font-bold hover:shadow-xl transition flex items-center justify-center gap-2 text-lg"
+                className="w-full bg-gradient-to-r from-blue-600 to-blue-700 text-white py-4 rounded-lg font-bold hover:shadow-xl transition flex items-center justify-center gap-2 text-lg disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                <Send size={22} />
-                {submitted ? 'Message envoyé ✓' : 'Envoyer le message'}
+                {loading ? (
+                  <>
+                    <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                    Envoi en cours...
+                  </>
+                ) : (
+                  <>
+                    <Send size={22} />
+                    Envoyer le message
+                  </>
+                )}
               </motion.button>
-
-              {submitted && (
-                <motion.div
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="bg-green-50 border-2 border-green-500 text-green-700 p-4 rounded-lg text-center font-semibold"
-                >
-                  ✓ Message reçu ! Nous vous recontacterons bientôt.
-                </motion.div>
-              )}
             </form>
           </motion.div>
         </div>

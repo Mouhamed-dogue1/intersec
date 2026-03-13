@@ -8,6 +8,7 @@ import Filiales from './pages/Filiales';
 import Projects from './pages/Projects';
 import Partnership from './pages/Partnership';
 import Contact from './pages/Contact';
+import IntersecAdminPage from './pages/AdminPanel';
 
 // AB'YNNOV
 import ABYnniovLayout from './filiales/ab-ynnov/layout/Layout';
@@ -16,6 +17,7 @@ import ABYnniovAbout from './filiales/ab-ynnov/pages/About';
 import ABYnniovActivities from './filiales/ab-ynnov/pages/Activities';
 import ABYnniovPerspectives from './filiales/ab-ynnov/pages/Perspectives';
 import ABYnniovContact from './filiales/ab-ynnov/pages/Contact';
+import ABYnnovAdminPage from './filiales/ab-ynnov/pages/AdminPanel';
 
 // H2i
 import H2iLayout from './filiales/h2i/layout/Layout';
@@ -24,6 +26,7 @@ import H2iAbout from './filiales/h2i/pages/About';
 import H2iServices from './filiales/h2i/pages/Services';
 import H2iProcess from './filiales/h2i/pages/Process';
 import H2iContact from './filiales/h2i/pages/Contact';
+import H2iAdminPage from './filiales/h2i/pages/AdminPanel';
 
 import './index.css';
 
@@ -52,6 +55,9 @@ function App() {
         <Route path="/projects" element={<MainLayout><Projects /></MainLayout>} />
         <Route path="/partnership" element={<MainLayout><Partnership /></MainLayout>} />
         <Route path="/contact" element={<MainLayout><Contact /></MainLayout>} />
+        
+        {/* Admin Intersec */}
+        <Route path="/admin" element={<IntersecAdminPage />} />
 
         {/* AB'YNNOV Routes */}
         <Route path="/filiales/ab-ynnov" element={<ABYnniovLayout />}>
@@ -61,6 +67,9 @@ function App() {
           <Route path="perspectives" element={<ABYnniovPerspectives />} />
           <Route path="contact" element={<ABYnniovContact />} />
         </Route>
+        
+        {/* Admin AB'Ynnov */}
+        <Route path="/filiales/ab-ynnov/admin" element={<ABYnnovAdminPage />} />
 
         {/* H2i Routes */}
         <Route path="/filiales/h2i" element={<H2iLayout />}>
@@ -70,6 +79,9 @@ function App() {
           <Route path="process" element={<H2iProcess />} />
           <Route path="contact" element={<H2iContact />} />
         </Route>
+        
+        {/* Admin H2i */}
+        <Route path="/filiales/h2i/admin" element={<H2iAdminPage />} />
       </Routes>
     </Router>
   );

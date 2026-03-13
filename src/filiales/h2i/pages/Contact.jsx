@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Mail, Phone, MapPin, Send, Clock } from 'lucide-react';
+import { Mail, Phone, MapPin, Send, Clock, AlertCircle, CheckCircle } from 'lucide-react';
+import { h2iContactService } from '../../../services/pocketbase';
 
 export default function H2iContact() {
   const [formData, setFormData] = useState({
@@ -8,22 +9,61 @@ export default function H2iContact() {
     company: '',
     email: '',
     phone: '',
-    service_type: 'Recrutement',
+    partnership_type: 'Recrutement',
     message: ''
   });
 
-  const [submitted, setSubmitted] = useState(false);
+  const [status, setStatus] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Form submitted:', formData);
-    setSubmitted(true);
-    setTimeout(() => setSubmitted(false), 3000);
+    setLoading(true);
+    setStatus(null);
+
+    try {
+      const dataToSend = {
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone || '',
+        company: formData.company || '',
+        partnership_type: formData.partnership_type || '',
+        message: formData.message
+      };
+
+      await h2iContactService.create(dataToSend);
+
+      setStatus({ 
+        type: 'success', 
+        message: 'Message reçu ! Nous vous recontacterons rapidement.' 
+      });
+
+      // Reset form
+      setFormData({
+        name: '',
+        company: '',
+        email: '',
+        phone: '',
+        partnership_type: 'Recrutement',
+        message: ''
+      });
+
+      // Clear status after 5 seconds
+      setTimeout(() => setStatus(null), 5000);
+    } catch (error) {
+      console.error('Form submission error:', error);
+      setStatus({ 
+        type: 'error', 
+        message: 'Erreur lors de l\'envoi. Veuillez réessayer.' 
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   const containerVariants = {
@@ -164,6 +204,26 @@ export default function H2iContact() {
             transition={{ duration: 0.8 }}
           >
             <form onSubmit={handleSubmit} className="space-y-6">
+              {/* Status Messages */}
+              {status && (
+                <motion.div
+                  className={`p-4 rounded-lg flex items-center gap-3 ${
+                    status.type === 'success'
+                      ? 'bg-green-50 border border-green-200 text-green-800'
+                      : 'bg-red-50 border border-red-200 text-red-800'
+                  }`}
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                >
+                  {status.type === 'success' ? (
+                    <CheckCircle size={20} />
+                  ) : (
+                    <AlertCircle size={20} />
+                  )}
+                  <span className="font-semibold">{status.message}</span>
+                </motion.div>
+              )}
+
               {/* Name */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
@@ -177,7 +237,8 @@ export default function H2iContact() {
                   value={formData.name}
                   onChange={handleChange}
                   required
-                  className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-green-600 transition text-lg"
+                  disabled={loading}
+                  className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-green-600 transition text-lg disabled:opacity-50"
                   placeholder="Votre nom"
                 />
               </motion.div>
@@ -195,7 +256,8 @@ export default function H2iContact() {
                   value={formData.company}
                   onChange={handleChange}
                   required
-                  className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-green-600 transition text-lg"
+                  disabled={loading}
+                  className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-green-600 transition text-lg disabled:opacity-50"
                   placeholder="Nom de votre entreprise"
                 />
               </motion.div>
@@ -213,7 +275,8 @@ export default function H2iContact() {
                   value={formData.email}
                   onChange={handleChange}
                   required
-                  className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-green-600 transition text-lg"
+                  disabled={loading}
+                  className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-green-600 transition text-lg disabled:opacity-50"
                   placeholder="votre@email.com"
                 />
               </motion.div>
@@ -230,7 +293,8 @@ export default function H2iContact() {
                   name="phone"
                   value={formData.phone}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-green-600 transition text-lg"
+                  disabled={loading}
+                  className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-green-600 transition text-lg disabled:opacity-50"
                   placeholder="+212XXXXXXXXX"
                 />
               </motion.div>
@@ -243,10 +307,12 @@ export default function H2iContact() {
               >
                 <label className="block text-gray-900 font-bold mb-2">Type de service *</label>
                 <select
-                  name="service_type"
-                  value={formData.service_type}
+                  name="partnership_type"
+                  value={formData.partnership_type}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-green-600 transition text-lg"
+                  required
+                  disabled={loading}
+                  className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-green-600 transition text-lg disabled:opacity-50"
                 >
                   <option>Recrutement</option>
                   <option>Intérim</option>
@@ -267,8 +333,9 @@ export default function H2iContact() {
                   value={formData.message}
                   onChange={handleChange}
                   required
+                  disabled={loading}
                   rows="6"
-                  className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-green-600 transition resize-none text-lg"
+                  className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-green-600 transition resize-none text-lg disabled:opacity-50"
                   placeholder="Décrivez vos besoins RH..."
                 />
               </motion.div>
@@ -276,23 +343,23 @@ export default function H2iContact() {
               {/* Submit Button */}
               <motion.button
                 type="submit"
+                disabled={loading}
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                className="w-full bg-gradient-to-r from-green-600 to-green-700 text-white py-4 rounded-lg font-bold hover:shadow-xl transition flex items-center justify-center gap-2 text-lg"
+                className="w-full bg-gradient-to-r from-green-600 to-green-700 text-white py-4 rounded-lg font-bold hover:shadow-xl transition flex items-center justify-center gap-2 text-lg disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                <Send size={22} />
-                {submitted ? 'Message envoyé ✓' : 'Envoyer le message'}
+                {loading ? (
+                  <>
+                    <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                    Envoi en cours...
+                  </>
+                ) : (
+                  <>
+                    <Send size={22} />
+                    Envoyer le message
+                  </>
+                )}
               </motion.button>
-
-              {submitted && (
-                <motion.div
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="bg-green-50 border-2 border-green-500 text-green-700 p-4 rounded-lg text-center font-semibold"
-                >
-                  ✓ Message reçu ! Nous vous recontacterons rapidement.
-                </motion.div>
-              )}
             </form>
           </motion.div>
         </div>
