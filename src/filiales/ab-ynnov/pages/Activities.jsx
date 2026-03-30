@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { ShoppingCart, Truck, Home, Zap, Globe, TrendingUp, Award, Users } from 'lucide-react';
+import OptimizedImage from '../../../components/OptimizedImage';
 
 export default function ABYnniovActivities() {
   const activities = [
@@ -137,12 +138,14 @@ export default function ABYnniovActivities() {
                   <div className="absolute inset-0 bg-gradient-to-br from-blue-600 to-blue-800 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-xl -z-10" />
                   
                   <div className="relative bg-white rounded-2xl overflow-hidden shadow-lg group-hover:shadow-2xl transition-all duration-300 h-full">
-                    {/* Image Container */}
+                    {/* Image Container avec OptimizedImage */}
                     <div className="relative h-48 overflow-hidden bg-gray-100">
-                      <img
+                      <OptimizedImage
                         src={activity.image}
                         alt={activity.category}
-                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                        className="w-full h-full group-hover:scale-110"
+                        containerClassName="w-full h-full"
+                        objectFit="cover"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-blue-900/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                     </div>

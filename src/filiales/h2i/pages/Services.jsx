@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Users, Briefcase, Search, Zap, CheckCircle, Award } from 'lucide-react';
+import OptimizedImage from '../../../components/OptimizedImage';
 
 export default function H2iServices() {
   const services = [
@@ -137,10 +138,12 @@ export default function H2iServices() {
 
                     {/* Image Section */}
                     <div className="relative h-80 overflow-hidden bg-gray-100">
-                      <img
+                      <OptimizedImage
                         src={service.image}
                         alt={service.title}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                        className="w-full h-full group-hover:scale-105"
+                        containerClassName="w-full h-full"
+                        objectFit="cover"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
                       
