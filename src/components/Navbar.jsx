@@ -22,6 +22,7 @@ export default function Navbar() {
     { label: 'À propos', path: '/about' },
     { label: 'Filiales', path: '/filiales' },
     { label: 'Services', path: '/services' },
+    { label: 'Qualité', path: '/quality' },
     { label: 'Projets', path: '/projects' },
     { label: 'Partenariats', path: '/partnership' },
     { label: 'Contact', path: '/contact' }

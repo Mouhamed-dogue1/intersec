@@ -8,6 +8,7 @@ import Filiales from './pages/Filiales';
 import Projects from './pages/Projects';
 import Partnership from './pages/Partnership';
 import Contact from './pages/Contact';
+import Quality from './pages/Quality';
 import IntersecAdminPage from './pages/AdminPanel';
 
 // AB'YNNOV
@@ -51,6 +52,7 @@ function App() {
         <Route path="/" element={<MainLayout><Home /></MainLayout>} />
         <Route path="/about" element={<MainLayout><About /></MainLayout>} />
         <Route path="/services" element={<MainLayout><Services /></MainLayout>} />
+        <Route path="/quality" element={<MainLayout><Quality /></MainLayout>} />
         <Route path="/filiales" element={<MainLayout><Filiales /></MainLayout>} />
         <Route path="/projects" element={<MainLayout><Projects /></MainLayout>} />
         <Route path="/partnership" element={<MainLayout><Partnership /></MainLayout>} />
