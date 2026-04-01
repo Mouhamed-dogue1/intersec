@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, Award } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 export default function Navbar() {
@@ -22,7 +22,7 @@ export default function Navbar() {
     { label: 'À propos', path: '/about' },
     { label: 'Filiales', path: '/filiales' },
     { label: 'Services', path: '/services' },
-    { label: 'Qualité', path: '/quality' },
+    { label: 'Politique Qualité', path: '/quality', icon: Award },
     { label: 'Projets', path: '/projects' },
     { label: 'Partenariats', path: '/partnership' },
     { label: 'Contact', path: '/contact' }
@@ -68,22 +68,38 @@ export default function Navbar() {
           </Link>
 
           {/* Desktop Menu */}
-          <div className="hidden md:flex space-x-1">
-            {menuItems.map(item => (
-              <Link
-                key={item.path}
-                to={item.path}
-                className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
-                  isActive(item.path)
-                    ? 'bg-intersec-green text-white'
-                    : isScrolled
-                    ? 'text-gray-900 hover:text-intersec-green'
-                    : 'text-white hover:bg-white/20'
-                }`}
-              >
-                {item.label}
-              </Link>
-            ))}
+          <div className="hidden md:flex space-x-2 items-center">
+            {menuItems.map(item => {
+              const Icon = item.icon;
+              return (
+                <motion.div
+                  key={item.path}
+                  whileHover={{ scale: 1.08 }}
+                  className="relative"
+                >
+                  <Link
+                    to={item.path}
+                    className={`px-4 py-2 rounded-lg text-sm font-medium transition-all inline-flex items-center gap-2 ${
+                      isActive(item.path)
+                        ? Icon ? 'bg-gradient-to-r from-intersec-green to-emerald-700 text-white shadow-lg drop-shadow-lg' : 'bg-intersec-green text-white'
+                        : isScrolled
+                        ? 'text-gray-900 hover:text-intersec-green hover:bg-intersec-light/50'
+                        : 'text-white hover:bg-white/20'
+                    }`}
+                  >
+                    {Icon && (
+                      <motion.div
+                        animate={isActive(item.path) ? { rotate: 360 } : { rotate: 0 }}
+                        transition={{ duration: 3, repeat: isActive(item.path) ? Infinity : 0, ease: 'linear' }}
+                      >
+                        <Icon size={16} />
+                      </motion.div>
+                    )}
+                    <span>{item.label}</span>
+                  </Link>
+                </motion.div>
+              );
+            })}
           </div>
 
           {/* CTA Button */}
@@ -114,20 +130,24 @@ export default function Navbar() {
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
           >
-            {menuItems.map(item => (
-              <Link
-                key={item.path}
-                to={item.path}
-                className={`block px-3 py-2 rounded-md text-base font-medium ${
-                  isActive(item.path)
-                    ? 'bg-intersec-green text-white'
-                    : 'text-gray-900 hover:bg-gray-100'
-                }`}
-                onClick={() => setIsOpen(false)}
-              >
-                {item.label}
-              </Link>
-            ))}
+            {menuItems.map(item => {
+              const Icon = item.icon;
+              return (
+                <Link
+                  key={item.path}
+                  to={item.path}
+                  className={`block px-4 py-2 rounded-md text-base font-medium flex items-center gap-2 ${
+                    isActive(item.path)
+                      ? Icon ? 'bg-gradient-to-r from-intersec-green to-emerald-700 text-white shadow-lg' : 'bg-intersec-green text-white'
+                      : 'text-gray-900 hover:bg-gray-100'
+                  }`}
+                  onClick={() => setIsOpen(false)}
+                >
+                  {Icon && <Icon size={16} className={isActive(item.path) ? 'drop-shadow-lg' : ''} />}
+                  <span>{item.label}</span>
+                </Link>
+              );
+            })}
           </motion.div>
         )}
       </div>
