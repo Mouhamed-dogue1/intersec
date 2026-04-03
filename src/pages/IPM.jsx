@@ -773,6 +773,67 @@ export default function IPM() {
                 </motion.a>
               </motion.div>
 
+              {/* Conditions & Documents */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8, delay: 1 }}
+                className="mt-10 grid grid-cols-1 lg:grid-cols-2 gap-6"
+              >
+                <motion.section
+                  className="relative overflow-hidden rounded-3xl p-8 bg-gradient-to-br from-emerald-700 via-teal-600 to-cyan-500 text-white shadow-2xl border border-white/30"
+                  whileHover={{ translateY: -6 }}
+                  transition={{ type: 'spring', stiffness: 120 }}
+                >
+                  <div className="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_top,_rgba(255,255,255,0.2),_transparent_55%)]" />
+                  <div className="mb-4 inline-flex items-center gap-3 rounded-full bg-black/20 px-4 py-2 border border-yellow-400">
+                  <span className="inline-flex items-center justify-center h-8 w-8 rounded-full bg-yellow-400 text-black font-black">!</span>
+                  <span className="text-sm uppercase font-bold tracking-wider text-white">Info critique : lecture obligatoire pour être éligible</span>
+                </div>
+                <h3 className="relative text-4xl sm:text-5xl font-black mb-4">CONDITIONS INDISPENSABLES</h3>
+                  <p className="relative text-base text-white/90 mb-6 leading-relaxed">
+                    Ce sont les règles impératives du dispositif IPM Intersec. Une non-conformité sur un seul point peut suspendre votre accès à la prise en charge. Soigner votre dossier, c’est garantir votre activation prioritaire.
+                  </p>
+                  <ul className="relative list-decimal list-inside space-y-3 text-white text-lg">
+                    <li>Affiliation légale de l’entreprise à jour (Kbis/Registre du Commerce et NINEA déposés)</li>
+                    <li>Contrats de travail actuels pour les salariés déclarés + fiche d’effectif actualisée</li>
+                    <li>Situation sociale impeccable : obligations URSSAF/PRETAS en règle</li>
+                    <li>Absence de litiges RH non résolus sur les 12 derniers mois</li>
+                    <li>Engagement écrit du dirigeant signé sur la Charte IPM (santé, prévoyance, sécurité)</li>
+                    <li>Dossier complet transmis à INTERSEC pour génération du carnet santé officiel</li>
+                  </ul>
+                  <div className="mt-6 rounded-xl border-2 border-white/50 bg-black/15 p-4">
+                    <p className="font-bold uppercase text-yellow-200">Priorité IPM : dossier complet = traitement accéléré</p>
+                    <p className="text-white/85 text-sm">Les dossiers conformes certifiés reçoivent un accusé de réception sous 24h et un accès accéléré à nos praticiens agréés.</p>
+                  </div>
+                  <div className="mt-6 p-4 bg-white/15 rounded-xl border border-white/30">
+                    <p className="text-white/90 font-semibold mb-1">Nouveau: Priorité à l’excellence opérationnelle</p>
+                    <p className="text-sm text-white/80">Les bénéficiaires répondant à ces conditions obtiennent un traitement prioritaire et un suivi téléphonique dédié 24h/24.</p>
+                  </div>
+                </motion.section>
+
+                <motion.section
+                  className="relative overflow-hidden rounded-3xl p-8 bg-white border border-gray-200 shadow-2xl"
+                  whileHover={{ translateY: -6 }}
+                  transition={{ type: 'spring', stiffness: 120 }}
+                >
+                  <h3 className="text-3xl font-black text-emerald-700 mb-4">DOCUMENTS PREMIUM</h3>
+                  <p className="text-gray-600 mb-6">Ces éléments ne sont pas uniquement requis : ils garantissent l’éligibilité IPM et l’optimisation de votre suivi santé collectif.</p>
+                  <div className="grid grid-cols-1 gap-2 text-gray-700">
+                    <p className="rounded-xl bg-emerald-50 p-3 border border-emerald-100">Copie légalisée de la Carte Nationale d’Identité (participant)</p>
+                    <p className="rounded-xl bg-emerald-50 p-3 border border-emerald-100">Photos d’identité (2) pour le participant</p>
+                    <p className="rounded-xl bg-emerald-50 p-3 border border-emerald-100">Certificat de mariage enregistré par l’état civil</p>
+                    <p className="rounded-xl bg-emerald-50 p-3 border border-emerald-100">Copie légalisée de la CNI de l’épouse</p>
+                    <p className="rounded-xl bg-emerald-50 p-3 border border-emerald-100">Photos d’identité (2) pour l’épouse</p>
+                    <p className="rounded-xl bg-emerald-50 p-3 border border-emerald-100">Extrait de naissance pour chaque enfant à charge</p>
+                    <p className="rounded-xl bg-emerald-50 p-3 border border-emerald-100">Photos d’identité (2) par enfant</p>
+                    <p className="rounded-xl bg-emerald-50 p-3 border border-emerald-100">Attestation de prise en charge et d’entretien des enfants (pour bénéficiaires féminines)</p>
+                    <p className="rounded-xl bg-emerald-100 p-3 border border-emerald-200 font-semibold">Note : prise en charge jusqu’à 18 ans inclus. 18 ans + ne concerne plus le régime enfant</p>
+                  </div>
+                </motion.section>
+              </motion.div>
+
               {/* Trust Indicators */}
               <motion.div
                 initial={{ opacity: 0 }}
