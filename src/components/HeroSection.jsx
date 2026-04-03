@@ -95,7 +95,7 @@ export default function HeroSection() {
           transition={{ duration: 1, delay: 0.6 }}
         >
           {[
-            { number: '15+', label: 'Ans d\'expérience' },
+            { number: '30+', label: 'Ans d\'expérience' },
             { number: '100+', label: 'Clients de confiance' },
             { number: '3', label: 'Entités complémentaires' }
           ].map((stat, idx) => (
