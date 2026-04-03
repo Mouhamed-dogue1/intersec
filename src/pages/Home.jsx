@@ -201,8 +201,8 @@ export default function Home() {
             {[
               { number: '10+', label: 'Services Professionnels', icon: TrendingUp },
               { number: '2', label: 'Filiales Stratégiques', icon: Globe },
-              { number: '100+', label: 'Clients Satisfaits', icon: Users },
-              { number: '15+', label: 'Années d\'Expérience', icon: Award }
+              { number: '1000+', label: 'Clients Satisfaits', icon: Users },
+              { number: '30+', label: 'Années d\'Expérience', icon: Award }
             ].map((stat, idx) => {
               const Icon = stat.icon;
               return (

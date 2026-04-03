@@ -96,7 +96,7 @@ export default function HeroSection() {
         >
           {[
             { number: '30+', label: 'Ans d\'expérience' },
-            { number: '100+', label: 'Clients de confiance' },
+            { number: '1000+', label: 'Clients de confiance' },
             { number: '3', label: 'Entités complémentaires' }
           ].map((stat, idx) => (
             <motion.div

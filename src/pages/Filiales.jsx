@@ -430,7 +430,7 @@ export default function Filiales() {
             {[
               { icon: Briefcase, number: '2', label: 'Filiales spécialisées' },
               { icon: BarChart3, number: '6+', label: "Secteurs d'activité" },
-              { icon: ArrowRight, number: '100+', label: 'Clients satisfaits' }
+              { icon: ArrowRight, number: '1000+', label: 'Clients satisfaits' }
             ].map((stat, idx) => {
               const Icon = stat.icon;
               return (
