@@ -61,7 +61,8 @@ const createEntityContactService = (collectionName) => ({
         company: data.company,
         partnership_type: data.partnership_type,
         message: data.message,
-        status: 'Draft'
+        status: 'Draft',
+        is_read: false
       });
     } catch (error) {
       console.error(`Error creating contact in ${collectionName}:`, error);

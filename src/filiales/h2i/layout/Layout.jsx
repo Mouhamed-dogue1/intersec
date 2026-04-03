@@ -1,146 +1,71 @@
-import React, { useState } from 'react';
-import { Outlet, useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import { ChevronRight, Home, Menu, X } from 'lucide-react';
+import React from 'react';
+import { Outlet, useNavigate, useLocation } from 'react-router-dom';
 
 export default function H2iLayout() {
   const navigate = useNavigate();
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const location = useLocation();
 
   return (
     <div className="min-h-screen flex flex-col bg-white">
-      {/* Header H2i */}
-      <header className="bg-white border-b border-gray-200 sticky top-0 z-40">
-        <div className="px-4 md:px-8 lg:px-16">
-          <div className="flex items-center justify-between h-16">
-            {/* Logo & Title */}
-            <div 
-              className="flex items-center gap-3 cursor-pointer hover:opacity-80 transition"
-              onClick={() => navigate('/filiales/h2i')}
-            >
-              <img src="/h2i.png" alt="H2i" className="h-10" />
-              <span className="font-bold text-gray-900 hidden sm:block">H2i</span>
-            </div>
-
-            {/* Navigation */}
-            <nav className="hidden md:flex items-center gap-8">
-              <a href="/filiales/h2i" className="text-gray-700 hover:text-green-600 transition">Accueil</a>
-              <a href="/filiales/h2i/about" className="text-gray-700 hover:text-green-600 transition">À propos</a>
-              <a href="/filiales/h2i/services" className="text-gray-700 hover:text-green-600 transition">Services</a>
-              <a href="/filiales/h2i/process" className="text-gray-700 hover:text-green-600 transition">Processus</a>
-              <a href="/filiales/h2i/contact" className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition">Contact</a>
-              <button 
-                onClick={() => navigate('/')}
-                className="text-gray-600 hover:text-gray-900 transition"
-                title="Retour au site INTERSEC"
-              >
-                <Home size={20} />
-              </button>
-            </nav>
-
-            {/* Mobile Menu Button */}
-            <button 
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="md:hidden text-gray-600 hover:text-gray-900 p-2"
-              title="Menu"
-            >
-              {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-            </button>
+      <div className="border-b border-gray-200 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <div>
+            <h1 className="text-3xl font-extrabold text-green-800">H2i</h1>
+            <p className="text-gray-600 mt-1">Solutions RH du groupe INTERSEC</p>
           </div>
-        </div>
-      </header>
 
-      {/* Mobile Menu Dropdown */}
-      {mobileMenuOpen && (
-        <motion.div
-          className="md:hidden bg-white border-b border-gray-200 px-4 py-4"
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
-        >
-          <div className="space-y-3">
-            <a 
-              href="/filiales/h2i" 
-              className="block px-3 py-2 text-gray-700 hover:text-green-600 transition"
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              Accueil
-            </a>
-            <a 
-              href="/filiales/h2i/about" 
-              className="block px-3 py-2 text-gray-700 hover:text-green-600 transition"
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              À propos
-            </a>
-            <a 
-              href="/filiales/h2i/services" 
-              className="block px-3 py-2 text-gray-700 hover:text-green-600 transition"
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              Services
-            </a>
-            <a 
-              href="/filiales/h2i/process" 
-              className="block px-3 py-2 text-gray-700 hover:text-green-600 transition"
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              Processus
-            </a>
-            <a 
-              href="/filiales/h2i/contact" 
-              className="block px-3 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition"
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              Contact
-            </a>
-            <button
-              onClick={() => {
-                navigate('/');
-                setMobileMenuOpen(false);
-              }}
-              className="w-full text-left px-3 py-2 text-gray-600 hover:text-gray-900 flex items-center gap-2"
-            >
-              <Home size={18} />
-              Retour INTERSEC
-            </button>
-          </div>
-        </motion.div>
-      )}
-
-      {/* Breadcrumb */}
-      <div className="px-4 md:px-8 lg:px-16 py-3 bg-gray-50 border-b border-gray-200">
-        <div className="max-w-6xl mx-auto flex items-center gap-2 text-sm text-gray-600">
-          <button 
+          <button
             onClick={() => navigate('/')}
-            className="hover:text-green-600 transition"
+            className="rounded-lg border border-gray-300 px-4 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-50"
           >
-            INTERSEC
+            Retour INTERSEC
           </button>
-          <ChevronRight size={16} />
-          <span className="font-medium text-gray-900">H2i</span>
+        </div>
+
+        <div className="bg-gradient-to-r from-green-50 to-white px-4 sm:px-6 lg:px-8 py-4 shadow-lg border-t border-green-100">
+          <div className="max-w-7xl mx-auto">
+            <nav className="flex flex-wrap items-center gap-3">
+              {[
+                {label:'Accueil', path:'/filiales/h2i'},
+                {label:'À propos', path:'/filiales/h2i/about'},
+                {label:'Services', path:'/filiales/h2i/services'},
+                {label:'Blog', path:'/blog'},
+                {label:'Processus', path:'/filiales/h2i/process'},
+                {label:'Contact', path:'/filiales/h2i/contact'}
+              ].map((item)=> (
+                <button
+                  key={item.path}
+                  className={`relative px-6 py-3 rounded-xl font-bold text-sm transition-all duration-300 transform hover:scale-105 hover:shadow-lg ${
+                    location.pathname===item.path
+                      ? 'bg-gradient-to-r from-green-600 to-green-700 text-white shadow-xl'
+                      : 'text-green-800 hover:bg-green-100 hover:text-green-900 border border-green-200'
+                  }`}
+                  onClick={()=>navigate(item.path)}
+                >
+                  {item.label}
+                  {location.pathname===item.path && (
+                    <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-2 h-2 bg-white rounded-full"></div>
+                  )}
+                </button>
+              ))}
+            </nav>
+          </div>
         </div>
       </div>
 
-      {/* Main Content */}
       <main className="flex-1">
         <Outlet />
       </main>
 
-      {/* Footer H2i */}
-      <footer className="bg-gray-900 text-white mt-20">
+      <footer className="bg-gray-950 text-white mt-20">
         <div className="px-4 md:px-8 lg:px-16 py-16">
           <div className="max-w-6xl mx-auto grid md:grid-cols-4 gap-8 mb-8">
-            {/* Logo & Desc */}
             <div>
               <img src="/h2i.png" alt="H2i" className="h-12 mb-4" />
-              <p className="text-gray-400 text-sm">
-                Solutions professionnelles en ressources humaines
-              </p>
+              <p className="text-gray-400 text-sm">Membre du Groupe INTERSEC, spécialiste RH.</p>
             </div>
-
-            {/* Navigation */}
             <div>
-              <h4 className="font-bold mb-4">Navigation</h4>
+              <h4 className="font-bold mb-4">Liens rapides</h4>
               <ul className="space-y-2 text-sm text-gray-400">
                 <li><a href="/filiales/h2i" className="hover:text-white transition">Accueil</a></li>
                 <li><a href="/filiales/h2i/about" className="hover:text-white transition">À propos</a></li>
@@ -148,8 +73,6 @@ export default function H2iLayout() {
                 <li><a href="/filiales/h2i/process" className="hover:text-white transition">Processus</a></li>
               </ul>
             </div>
-
-            {/* Contact */}
             <div>
               <h4 className="font-bold mb-4">Contact</h4>
               <ul className="space-y-2 text-sm text-gray-400">
@@ -158,8 +81,6 @@ export default function H2iLayout() {
                 <li>Dakar, Sénégal</li>
               </ul>
             </div>
-
-            {/* Groupe INTERSEC */}
             <div>
               <h4 className="font-bold mb-4">Groupe INTERSEC</h4>
               <ul className="space-y-2 text-sm text-gray-400">
@@ -169,10 +90,8 @@ export default function H2iLayout() {
               </ul>
             </div>
           </div>
-
-          {/* Copyright */}
-          <div className="border-t border-gray-800 pt-8 text-center text-sm text-gray-400">
-            <p>&copy; 2024 H2i - Membre du Groupe INTERSEC. Tous droits réservés.</p>
+          <div className="border-t border-gray-800 pt-6 text-center text-sm text-gray-500">
+            <p>&copy; {new Date().getFullYear()} H2i - Membre du Groupe INTERSEC. Tous droits réservés.</p>
           </div>
         </div>
       </footer>

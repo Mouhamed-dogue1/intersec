@@ -54,7 +54,7 @@ export default function About() {
 
   return (
     <MainLayout>
-      <div className="pt-16"></div>
+      <div className="pt-4"></div>
       
       {/* Hero Section */}
       <section className="relative py-32 overflow-hidden">

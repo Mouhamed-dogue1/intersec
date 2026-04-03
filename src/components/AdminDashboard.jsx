@@ -16,8 +16,11 @@ export default function AdminDashboard({
   const [selectedContact, setSelectedContact] = useState(null);
   const [replyText, setReplyText] = useState('');
   const [sendingReply, setSendingReply] = useState(false);
-  const [filter, setFilter] = useState('all');
+  const [filter, setFilter] = useState('Draft');
   const [showReplyBox, setShowReplyBox] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 15;
 
   // Charger les contacts
   useEffect(() => {
@@ -28,8 +31,16 @@ export default function AdminDashboard({
       setError(null);
       try {
         const data = await contactService.getAll();
+        
+        // Normaliser les champs is_read et status
+        const normalizedData = data.map(contact => ({
+          ...contact,
+          is_read: contact.is_read === true || contact.is_read === '1' || contact.is_read === 1 ? true : false,
+          status: contact.status || 'Draft'
+        }));
+        
         if (isMounted) {
-          setContacts(data);
+          setContacts(normalizedData);
         }
       } catch (err) {
         if (isMounted) {
@@ -51,9 +62,25 @@ export default function AdminDashboard({
   }, []);
 
   // Filtrer les contacts
-  const filteredContacts = filter === 'all' 
+  const statusFiltered = filter === 'all' 
     ? contacts 
     : contacts.filter(c => c.status === filter);
+
+  // Filtrer par recherche
+  const filteredContacts = statusFiltered.filter(c => 
+    c.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    c.email.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  // Pagination
+  const totalPages = Math.ceil(filteredContacts.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const paginatedContacts = filteredContacts.slice(startIndex, startIndex + itemsPerPage);
+
+  // Réinitialiser la pagination si le filtre change
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [filter, searchTerm]);
 
   // Sélectionner un contact ET le marquer comme lu
   const handleSelectContact = async (contact) => {
@@ -270,8 +297,28 @@ export default function AdminDashboard({
             </div>
 
             {/* Contacts List */}
-            <div className="bg-white rounded-lg shadow-md overflow-hidden">
-              <div className="h-96 overflow-y-auto">
+            <div className="bg-white rounded-lg shadow-md overflow-hidden border-2 border-gray-100">
+              {/* Search Bar */}
+              <div className="p-3 border-b bg-gray-50">
+                <input
+                  type="text"
+                  placeholder="🔍 Rechercher par nom ou email..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                />
+              </div>
+
+              {/* Message Count */}
+              {filteredContacts.length > 0 && (
+                <div className="px-3 pt-2 pb-1 bg-gray-50 text-xs text-gray-600 border-b font-medium">
+                  📊 {filteredContacts.length} résultat{filteredContacts.length > 1 ? 's' : ''}
+                  {searchTerm && ` (pour "${searchTerm}")`}
+                  {filter === 'all' && ` — Affichage pagination 15/page`}
+                </div>
+              )}
+
+              <div className="h-96 overflow-y-auto bg-white">
                 {loading ? (
                   <div className="p-8 text-center text-gray-500">
                     Chargement...
@@ -281,7 +328,7 @@ export default function AdminDashboard({
                     Aucun message
                   </div>
                 ) : (
-                  filteredContacts.map((contact, idx) => (
+                  paginatedContacts.map((contact, idx) => (
                     <motion.div
                       key={contact.id}
                       onClick={() => handleSelectContact(contact)}
@@ -298,7 +345,7 @@ export default function AdminDashboard({
                             <h3 className="font-semibold text-gray-900 truncate">
                               {contact.name}
                             </h3>
-                            {!contact.is_read && (
+                            {!contact.is_read && contact.status !== 'Closed' && (
                               <span className="inline-block px-2 py-1 text-xs font-semibold bg-red-500 text-white rounded-full">
                                 Nouveau
                               </span>
@@ -319,6 +366,41 @@ export default function AdminDashboard({
                   ))
                 )}
               </div>
+
+              {/* Pagination Controls */}
+              {totalPages > 1 && (
+                <div className="px-4 py-3 bg-gray-50 border-t flex items-center justify-between text-sm">
+                  <span className="text-gray-600">
+                    Page {currentPage} sur {totalPages}
+                  </span>
+                  <div className="flex gap-2">
+                    <motion.button
+                      onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
+                      disabled={currentPage === 1}
+                      whileHover={currentPage !== 1 ? { scale: 1.05 } : {}}
+                      className={`px-3 py-1 rounded border transition text-xs ${
+                        currentPage === 1
+                          ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                          : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-100'
+                      }`}
+                    >
+                      ← Précédent
+                    </motion.button>
+                    <motion.button
+                      onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
+                      disabled={currentPage === totalPages}
+                      whileHover={currentPage !== totalPages ? { scale: 1.05 } : {}}
+                      className={`px-3 py-1 rounded border transition text-xs ${
+                        currentPage === totalPages
+                          ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                          : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-100'
+                      }`}
+                    >
+                      Suivant →
+                    </motion.button>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
 

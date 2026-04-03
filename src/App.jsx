@@ -4,11 +4,14 @@ import Footer from './components/Footer';
 import Home from './pages/Home';
 import About from './pages/About';
 import Services from './pages/Services';
+import ServiceDetail from './pages/ServiceDetail';
 import Filiales from './pages/Filiales';
 import Projects from './pages/Projects';
 import Partnership from './pages/Partnership';
 import Contact from './pages/Contact';
 import Quality from './pages/Quality';
+import IPM from './pages/IPM';
+import Blog from './pages/Blog';
 import IntersecAdminPage from './pages/AdminPanel';
 
 // AB'YNNOV
@@ -52,6 +55,12 @@ function App() {
         <Route path="/" element={<MainLayout><Home /></MainLayout>} />
         <Route path="/about" element={<MainLayout><About /></MainLayout>} />
         <Route path="/services" element={<MainLayout><Services /></MainLayout>} />
+        <Route path="/services/ipm" element={<MainLayout><ServiceDetail serviceId="ipm" /></MainLayout>} />
+        <Route path="/services/consulting" element={<MainLayout><ServiceDetail serviceId="consulting" /></MainLayout>} />
+        <Route path="/services/risk-management" element={<MainLayout><ServiceDetail serviceId="risk-management" /></MainLayout>} />
+        <Route path="/services/performance" element={<MainLayout><ServiceDetail serviceId="performance" /></MainLayout>} />
+        <Route path="/ipm" element={<MainLayout><IPM /></MainLayout>} />
+        <Route path="/blog" element={<MainLayout><Blog /></MainLayout>} />
         <Route path="/quality" element={<MainLayout><Quality /></MainLayout>} />
         <Route path="/filiales" element={<MainLayout><Filiales /></MainLayout>} />
         <Route path="/projects" element={<MainLayout><Projects /></MainLayout>} />

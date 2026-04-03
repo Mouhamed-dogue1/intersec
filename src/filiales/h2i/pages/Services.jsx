@@ -1,9 +1,11 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Users, Briefcase, Search, Zap, CheckCircle, Award } from 'lucide-react';
 import OptimizedImage from '../../../components/OptimizedImage';
 
 export default function H2iServices() {
+  const navigate = useNavigate();
   const services = [
     {
       id: 1,
@@ -183,7 +185,10 @@ export default function H2iServices() {
                       </div>
 
                       {/* CTA Button */}
-                      <button className={`w-full bg-gradient-to-r ${service.color} text-white font-bold py-3 px-6 rounded-xl hover:shadow-lg transition-all duration-300 transform group-hover:scale-105`}>
+                      <button
+                        onClick={() => navigate('/services')}
+                        className={`w-full bg-gradient-to-r ${service.color} text-white font-bold py-3 px-6 rounded-xl hover:shadow-lg transition-all duration-300 transform group-hover:scale-105`}
+                      >
                         En savoir plus →
                       </button>
                     </div>

@@ -5,10 +5,11 @@ import PartnersSection from '../components/PartnersSection';
 import MainLayout from '../layout/MainLayout';
 import ImageCarousel from '../components/ImageCarousel';
 import { motion } from 'framer-motion';
-import { ArrowRight, CheckCircle, TrendingUp, Users, Globe, Award, Building2, Briefcase, Leaf, Package, Shield, Sparkles, Flame, Home as HomeIcon, Truck } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { ArrowRight, CheckCircle, TrendingUp, Users, Globe, Award, Building2, Briefcase, Leaf, Package, Shield, Sparkles, Flame, Home as HomeIcon, Truck, Target } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
 
 export default function Home() {
+  const navigate = useNavigate();
   // Service images from public folder
   const serviceImages = [
     '/img_service_intersec/agrobusiness.jpg',
@@ -311,6 +312,121 @@ export default function Home() {
               </Link>
             </motion.div>
           </motion.div>
+        </div>
+      </section>
+
+      {/* Core Services Section */}
+      <section className="py-20 bg-gradient-to-b from-gray-50 to-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            className="text-center mb-16"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+          >
+            <motion.div
+              className="inline-block mb-6"
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={{ delay: 0.2 }}
+            >
+              <span className="px-4 py-2 bg-emerald-100 text-emerald-700 rounded-full text-sm font-bold">
+                Services Experts
+              </span>
+            </motion.div>
+            <h2 className="text-5xl font-bold text-gray-900 mb-6">
+              Nos Solutions <span className="text-emerald-600">Stratégiques</span>
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Découvrez nos services phares conçus pour optimiser votre performance et assurer votre croissance durable.
+            </p>
+          </motion.div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {[
+              {
+                id: 'ipm',
+                title: 'Institut de Prévoyance Maladie (IPM)',
+                description: 'Solution complète de protection sociale pour vos salariés avec gestion des risques professionnels et prévention santé.',
+                icon: Shield,
+                features: ['Couverture santé complète', 'Gestion des risques', 'Prévention et dépistage'],
+                gradient: 'from-emerald-600 to-teal-600'
+              },
+              {
+                id: 'consulting',
+                title: 'Conseil RH & Organisation',
+                description: 'Accompagnement stratégique pour optimiser vos ressources humaines et développer votre culture d\'entreprise.',
+                icon: Users,
+                features: ['Audit RH complet', 'Stratégie de recrutement', 'Formation et développement'],
+                gradient: 'from-blue-600 to-cyan-600'
+              },
+              {
+                id: 'risk-management',
+                title: 'Gestion des Risques',
+                description: 'Protection globale contre les risques professionnels et opérationnels pour assurer la continuité de votre activité.',
+                icon: Target,
+                features: ['Évaluation des risques', 'Plans de prévention', 'Assurance adaptée'],
+                gradient: 'from-purple-600 to-pink-600'
+              },
+              {
+                id: 'performance',
+                title: 'Optimisation Performance',
+                description: 'Boostez l\'efficacité et la rentabilité de votre entreprise grâce à nos méthodes d\'optimisation éprouvées.',
+                icon: TrendingUp,
+                features: ['Analyse de performance', 'Optimisation des processus', 'KPIs et tableaux de bord'],
+                gradient: 'from-orange-600 to-red-600'
+              }
+            ].map((service, index) => {
+              const IconComponent = service.icon;
+              return (
+                <motion.div
+                  key={service.id}
+                  className="group bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden cursor-pointer"
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: index * 0.1 }}
+                  viewport={{ once: true }}
+                  whileHover={{ y: -8 }}
+                  onClick={() => navigate(`/services/${service.id}`)}
+                  role="button"
+                  aria-label={`En savoir plus sur ${service.title}`}
+                >
+                  <div className={`h-2 bg-gradient-to-r ${service.gradient}`} />
+                  
+                  <div className="p-8">
+                    <div className={`w-16 h-16 rounded-xl bg-gradient-to-br ${service.gradient} flex items-center justify-center mb-6 shadow-lg`}>
+                      <IconComponent size={32} className="text-white" />
+                    </div>
+
+                    <h3 className="text-2xl font-bold text-gray-900 mb-4 group-hover:text-emerald-600 transition-colors">
+                      {service.title}
+                    </h3>
+
+                    <p className="text-gray-600 mb-6 leading-relaxed">
+                      {service.description}
+                    </p>
+
+                    <div className="space-y-2 mb-6">
+                      {service.features.map((feature, idx) => (
+                        <div key={idx} className="flex items-center gap-2 text-sm text-gray-700">
+                          <CheckCircle size={16} className="text-emerald-600 flex-shrink-0" />
+                          {feature}
+                        </div>
+                      ))}
+                    </div>
+
+                    <div className="flex items-center justify-between">
+                      <span className="text-emerald-600 font-semibold group-hover:text-emerald-700 transition-colors">
+                        En savoir plus →
+                      </span>
+                      <ArrowRight size={20} className="text-emerald-600 group-hover:translate-x-2 transition-transform" />
+                    </div>
+                  </div>
+                </motion.div>
+              );
+            })}
+          </div>
         </div>
       </section>
 

@@ -139,23 +139,21 @@ export default function ContactForm({ isPartnership = false, entityService = nul
           />
         </div>
 
-        {/* Phone (visible for partnership and filiales) */}
-        {isPartnership && (
-          <div>
-            <label className="block text-sm font-medium text-gray-900 mb-2">
-              Téléphone
-            </label>
-            <input
-              type="tel"
-              name="phone"
-              value={formData.phone}
-              onChange={handleChange}
-              required
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-intersec-green focus:border-transparent outline-none transition"
-              placeholder="+223 XXXX XXXX"
-            />
-          </div>
-        )}
+        {/* Phone (always visible) */}
+        <div>
+          <label className="block text-sm font-medium text-gray-900 mb-2">
+            Téléphone
+          </label>
+          <input
+            type="tel"
+            name="phone"
+            value={formData.phone}
+            onChange={handleChange}
+            required
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-intersec-green focus:border-transparent outline-none transition"
+            placeholder="+223 XXXX XXXX"
+          />
+        </div>
 
         {/* Company (Partnership only) */}
         {isPartnership && (
@@ -168,7 +166,6 @@ export default function ContactForm({ isPartnership = false, entityService = nul
               name="company"
               value={formData.company}
               onChange={handleChange}
-              required
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-intersec-green focus:border-transparent outline-none transition"
               placeholder="Nom de votre entreprise"
             />

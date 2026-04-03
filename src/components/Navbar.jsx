@@ -1,34 +1,72 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, Award } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { Menu, X, Award, ChevronDown, Building2, Users, FileText, Briefcase, Heart, Phone } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [openDropdown, setOpenDropdown] = useState(null);
   const location = useLocation();
+  const dropdownRef = useRef(null);
 
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
     };
 
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setOpenDropdown(null);
+      }
+    };
+
     window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    document.addEventListener('mousedown', handleClickOutside);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
   }, []);
 
   const menuItems = [
-    { label: 'Accueil', path: '/' },
-    { label: 'À propos', path: '/about' },
-    { label: 'Filiales', path: '/filiales' },
-    { label: 'Services', path: '/services' },
-    { label: 'Politique Qualité', path: '/quality', icon: Award },
-    { label: 'Projets', path: '/projects' },
-    { label: 'Partenariats', path: '/partnership' },
-    { label: 'Contact', path: '/contact' }
+    {
+      label: 'Services',
+      icon: Building2,
+      dropdown: [
+        { label: 'Tous nos services', path: '/services', icon: Building2 },
+        { label: 'IPM', path: '/ipm', icon: Users },
+        { label: 'Blog', path: '/blog', icon: FileText },
+      ]
+    },
+    {
+      label: 'À propos',
+      icon: Briefcase,
+      dropdown: [
+        { label: 'Notre entreprise', path: '/about', icon: Building2 },
+        { label: 'Politique Qualité', path: '/quality', icon: Award },
+        { label: 'Nos projets', path: '/projects', icon: Briefcase },
+      ]
+    },
+    {
+      label: 'Filiales',
+      icon: Building2,
+      dropdown: [
+        { label: "AB'YNNOV", path: '/filiales/ab-ynnov', icon: Building2 },
+        { label: 'H2i', path: '/filiales/h2i', icon: Users }
+      ]
+    },
+    { label: 'Partenariats', path: '/partnership', icon: Heart },
+    { label: 'Contact', path: '/contact', icon: Phone }
   ];
 
   const isActive = (path) => location.pathname === path;
+  const isDropdownActive = (dropdown) => dropdown.some(item => isActive(item.path));
+
+  const toggleDropdown = (label) => {
+    setOpenDropdown(openDropdown === label ? null : label);
+  };
 
   return (
     <motion.nav
@@ -68,35 +106,91 @@ export default function Navbar() {
           </Link>
 
           {/* Desktop Menu */}
-          <div className="hidden md:flex space-x-2 items-center">
+          <div className="hidden md:flex space-x-1 items-center" ref={dropdownRef}>
             {menuItems.map(item => {
               const Icon = item.icon;
+              const hasDropdown = item.dropdown;
+              const isItemActive = hasDropdown ? isDropdownActive(item.dropdown) : isActive(item.path);
+
               return (
                 <motion.div
-                  key={item.path}
-                  whileHover={{ scale: 1.08 }}
+                  key={item.label}
                   className="relative"
+                  whileHover={{ scale: 1.02 }}
                 >
-                  <Link
-                    to={item.path}
-                    className={`px-4 py-2 rounded-lg text-sm font-medium transition-all inline-flex items-center gap-2 ${
-                      isActive(item.path)
-                        ? Icon ? 'bg-gradient-to-r from-intersec-green to-emerald-700 text-white shadow-lg drop-shadow-lg' : 'bg-intersec-green text-white'
-                        : isScrolled
-                        ? 'text-gray-900 hover:text-intersec-green hover:bg-intersec-light/50'
-                        : 'text-white hover:bg-white/20'
-                    }`}
-                  >
-                    {Icon && (
+                  {hasDropdown ? (
+                    <button
+                      onClick={() => toggleDropdown(item.label)}
+                      className={`px-4 py-2 rounded-lg text-sm font-medium transition-all inline-flex items-center gap-2 ${
+                        isItemActive
+                          ? 'bg-gradient-to-r from-intersec-green to-emerald-700 text-white shadow-lg'
+                          : isScrolled
+                          ? 'text-gray-900 hover:text-intersec-green hover:bg-intersec-light/50'
+                          : 'text-white hover:bg-white/20'
+                      }`}
+                    >
+                      <Icon size={16} />
+                      <span>{item.label}</span>
                       <motion.div
-                        animate={isActive(item.path) ? { rotate: 360 } : { rotate: 0 }}
-                        transition={{ duration: 3, repeat: isActive(item.path) ? Infinity : 0, ease: 'linear' }}
+                        animate={{ rotate: openDropdown === item.label ? 180 : 0 }}
+                        transition={{ duration: 0.2 }}
                       >
-                        <Icon size={16} />
+                        <ChevronDown size={14} />
+                      </motion.div>
+                    </button>
+                  ) : (
+                    <Link
+                      to={item.path}
+                      className={`px-4 py-2 rounded-lg text-sm font-medium transition-all inline-flex items-center gap-2 ${
+                        isItemActive
+                          ? 'bg-intersec-green text-white shadow-lg'
+                          : isScrolled
+                          ? 'text-gray-900 hover:text-intersec-green hover:bg-intersec-light/50'
+                          : 'text-white hover:bg-white/20'
+                      }`}
+                    >
+                      <Icon size={16} />
+                      <span>{item.label}</span>
+                    </Link>
+                  )}
+
+                  {/* Dropdown Menu */}
+                  <AnimatePresence>
+                    {hasDropdown && openDropdown === item.label && (
+                      <motion.div
+                        initial={{ opacity: 0, y: -10, scale: 0.95 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        exit={{ opacity: 0, y: -10, scale: 0.95 }}
+                        transition={{ duration: 0.2 }}
+                        className="absolute top-full left-0 mt-2 w-64 bg-white rounded-xl shadow-2xl border border-gray-100 overflow-hidden z-50"
+                      >
+                        {item.dropdown.map((dropdownItem, idx) => {
+                          const DropdownIcon = dropdownItem.icon;
+                          return (
+                            <motion.div
+                              key={dropdownItem.path}
+                              initial={{ opacity: 0, x: -20 }}
+                              animate={{ opacity: 1, x: 0 }}
+                              transition={{ delay: idx * 0.05 }}
+                            >
+                              <Link
+                                to={dropdownItem.path}
+                                className={`block px-4 py-3 text-sm font-medium transition-all hover:bg-gray-50 flex items-center gap-3 ${
+                                  isActive(dropdownItem.path)
+                                    ? 'bg-emerald-50 text-emerald-700 border-l-4 border-emerald-500'
+                                    : 'text-gray-700'
+                                }`}
+                                onClick={() => setOpenDropdown(null)}
+                              >
+                                <DropdownIcon size={16} className={isActive(dropdownItem.path) ? 'text-emerald-600' : 'text-gray-500'} />
+                                <span>{dropdownItem.label}</span>
+                              </Link>
+                            </motion.div>
+                          );
+                        })}
                       </motion.div>
                     )}
-                    <span>{item.label}</span>
-                  </Link>
+                  </AnimatePresence>
                 </motion.div>
               );
             })}
