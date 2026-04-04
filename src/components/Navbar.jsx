@@ -7,6 +7,7 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [openDropdown, setOpenDropdown] = useState(null);
+  const [openMobileDropdown, setOpenMobileDropdown] = useState(null);
   const location = useLocation();
   const dropdownRef = useRef(null);
 
@@ -226,18 +227,77 @@ export default function Navbar() {
           >
             {menuItems.map(item => {
               const Icon = item.icon;
+              const hasDropdown = item.dropdown;
+              
+              if (hasDropdown) {
+                return (
+                  <div key={item.label}>
+                    <button
+                      onClick={() => setOpenMobileDropdown(openMobileDropdown === item.label ? null : item.label)}
+                      className="w-full px-4 py-2 rounded-md text-base font-medium flex items-center justify-between text-gray-900 hover:bg-gray-100 transition-all"
+                    >
+                      <div className="flex items-center gap-2">
+                        {Icon && <Icon size={16} />}
+                        <span>{item.label}</span>
+                      </div>
+                      <motion.div
+                        animate={{ rotate: openMobileDropdown === item.label ? 180 : 0 }}
+                        transition={{ duration: 0.2 }}
+                      >
+                        <ChevronDown size={16} />
+                      </motion.div>
+                    </button>
+                    
+                    {/* Mobile Dropdown Menu */}
+                    <AnimatePresence>
+                      {openMobileDropdown === item.label && (
+                        <motion.div
+                          initial={{ opacity: 0, height: 0 }}
+                          animate={{ opacity: 1, height: 'auto' }}
+                          exit={{ opacity: 0, height: 0 }}
+                          transition={{ duration: 0.2 }}
+                          className="bg-gray-50 overflow-hidden"
+                        >
+                          {item.dropdown.map(dropdownItem => {
+                            const DropdownIcon = dropdownItem.icon;
+                            return (
+                              <Link
+                                key={dropdownItem.path}
+                                to={dropdownItem.path}
+                                className={`block px-6 py-2 text-sm font-medium flex items-center gap-2 transition-all ${
+                                  isActive(dropdownItem.path)
+                                    ? 'bg-emerald-100 text-emerald-700 border-l-4 border-emerald-500'
+                                    : 'text-gray-700 hover:bg-gray-100'
+                                }`}
+                                onClick={() => {
+                                  setIsOpen(false);
+                                  setOpenMobileDropdown(null);
+                                }}
+                              >
+                                {DropdownIcon && <DropdownIcon size={16} />}
+                                <span>{dropdownItem.label}</span>
+                              </Link>
+                            );
+                          })}
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                );
+              }
+              
               return (
                 <Link
-                  key={item.path}
+                  key={item.label}
                   to={item.path}
-                  className={`block px-4 py-2 rounded-md text-base font-medium flex items-center gap-2 ${
+                  className={`block px-4 py-2 rounded-md text-base font-medium flex items-center gap-2 transition-all ${
                     isActive(item.path)
-                      ? Icon ? 'bg-gradient-to-r from-intersec-green to-emerald-700 text-white shadow-lg' : 'bg-intersec-green text-white'
+                      ? 'bg-gradient-to-r from-intersec-green to-emerald-700 text-white shadow-lg'
                       : 'text-gray-900 hover:bg-gray-100'
                   }`}
                   onClick={() => setIsOpen(false)}
                 >
-                  {Icon && <Icon size={16} className={isActive(item.path) ? 'drop-shadow-lg' : ''} />}
+                  {Icon && <Icon size={16} />}
                   <span>{item.label}</span>
                 </Link>
               );

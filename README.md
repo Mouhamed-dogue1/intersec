@@ -173,8 +173,9 @@ export default defineConfig({
 ## 📧 Contact
 
 Pour des questions sur le site:
-- Email: info@intersec.ml
-- Localisation: Mali, Afrique
+- Email: intersec@interimsecurite.com
+- Téléphone: +221 33 835 3108
+- Adresse: 454, Cité du Golf de Cambérène, BP 7607 Dakar, Sénégal
 
 ## 📄 Licence
 

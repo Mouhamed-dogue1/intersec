@@ -134,7 +134,7 @@ const siteSettingsSchema = {
   },
   email: {
     type: "email",
-    defaultValue: "info@intersec.ml"
+    defaultValue: "intersec@interimsecurite.com"
   },
   phone: {
     type: "text"

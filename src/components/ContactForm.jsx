@@ -151,7 +151,7 @@ export default function ContactForm({ isPartnership = false, entityService = nul
             onChange={handleChange}
             required
             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-intersec-green focus:border-transparent outline-none transition"
-            placeholder="+223 XXXX XXXX"
+            placeholder="+221 33 835 3108"
           />
         </div>
 

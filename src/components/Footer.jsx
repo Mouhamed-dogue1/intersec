@@ -93,15 +93,15 @@ export default function Footer() {
             <div className="space-y-3">
               <div className="flex items-center text-gray-400 hover:text-intersec-green transition cursor-pointer">
                 <MapPin size={18} className="mr-2" />
-                <span className="text-sm">Sénégal, Afrique</span>
+                <span className="text-sm">454, Cité du Golf de Cambérène, BP 7607 Dakar</span>
               </div>
               <div className="flex items-center text-gray-400 hover:text-intersec-green transition cursor-pointer">
                 <Phone size={18} className="mr-2" />
-                <span className="text-sm">+223 XXXX XXXX</span>
+                <span className="text-sm">+221 33 835 3108</span>
               </div>
               <div className="flex items-center text-gray-400 hover:text-intersec-green transition cursor-pointer">
                 <Mail size={18} className="mr-2" />
-                <span className="text-sm">info@intersec.ml</span>
+                <span className="text-sm">intersec@interimsecurite.com</span>
               </div>
             </div>
           </motion.div>

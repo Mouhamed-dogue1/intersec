@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import MainLayout from '../layout/MainLayout';
 import ContactForm from '../components/ContactForm';
+import MapWithSearch from '../components/MapWithSearch';
 import { Mail, Phone, MapPin, Clock } from 'lucide-react';
 
 export default function Contact() {
@@ -8,19 +9,19 @@ export default function Contact() {
     {
       icon: MapPin,
       title: "Adresse",
-      content: "Sénégal, Afrique",
-      subtext: "Siège social du Groupe INTERSEC"
+      content: "454, Cité du Golf de Cambérène",
+      subtext: "BP 7607 Dakar, Sénégal"
     },
     {
       icon: Phone,
       title: "Téléphone",
-      content: "+223 XXXX XXXX",
+      content: "+221 33 835 3108",
       subtext: "Disponible du lundi au vendredi"
     },
     {
       icon: Mail,
       title: "Email",
-      content: "info@intersec.ml",
+      content: "intersec@interimsecurite.com",
       subtext: "Réponse en 24h"
     },
     {
@@ -137,29 +138,63 @@ export default function Contact() {
       </section>
 
       {/* Map Section */}
-      <section className="py-20 bg-white">
+      <section className="py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
-            className="rounded-2xl overflow-hidden shadow-2xl h-96 bg-gradient-to-br from-intersec-green to-intersec-dark flex items-center justify-center relative"
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
+            className="text-center mb-12"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
           >
-            <div className="text-center text-white">
-              <motion.p
-                className="text-6xl mb-4"
-                initial={{ opacity: 0, scale: 0.5 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.6, delay: 0.2 }}
+            <h2 className="text-5xl font-bold text-gray-900 mb-4">Trouvez Notre Localisation</h2>
+            <p className="text-xl text-gray-600">Recherchez une adresse ou consultez notre siège social</p>
+          </motion.div>
+
+          <MapWithSearch />
+
+          <motion.div
+            className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-8"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            viewport={{ once: true }}
+          >
+            <div className="bg-white p-6 rounded-xl shadow-lg border border-intersec-green/20">
+              <MapPin className="text-intersec-green mb-3" size={28} />
+              <h3 className="font-bold text-gray-900 mb-2">Adresse Exacte</h3>
+              <a
+                href="https://maps.google.com/?q=454+Cité+du+Golf+de+Cambérène,+Dakar"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-intersec-green hover:text-intersec-dark transition font-semibold"
               >
-                📍
-              </motion.p>
-              <h3 className="text-3xl font-bold mb-3">Sénégal, Afrique</h3>
-              <p className="text-xl text-white/90">Siège social du Groupe INTERSEC</p>
-              <p className="text-white/80 mt-4 max-w-md mx-auto">
-                Implantés stratégiquement en Afrique de l'Ouest pour servir au mieux nos clients régionaux
-              </p>
+                454, Cité du Golf de Cambérène
+                <br />
+                BP 7607 Dakar, Sénégal
+              </a>
+            </div>
+
+            <div className="bg-white p-6 rounded-xl shadow-lg border border-intersec-green/20">
+              <Phone className="text-intersec-green mb-3" size={28} />
+              <h3 className="font-bold text-gray-900 mb-2">Appelez-nous</h3>
+              <a
+                href="tel:+221338353108"
+                className="text-intersec-green hover:text-intersec-dark transition font-semibold"
+              >
+                +221 33 835 3108
+              </a>
+            </div>
+
+            <div className="bg-white p-6 rounded-xl shadow-lg border border-intersec-green/20">
+              <Mail className="text-intersec-green mb-3" size={28} />
+              <h3 className="font-bold text-gray-900 mb-2">Écrivez-nous</h3>
+              <a
+                href="mailto:intersec@interimsecurite.com"
+                className="text-intersec-green hover:text-intersec-dark transition font-semibold"
+              >
+                intersec@interimsecurite.com
+              </a>
             </div>
           </motion.div>
         </div>
