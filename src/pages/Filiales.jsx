@@ -1,10 +1,12 @@
 import { motion } from 'framer-motion';
+import { useState, useEffect } from 'react';
 import MainLayout from '../layout/MainLayout';
 import { Briefcase, BarChart3, ArrowRight, MapPin, ExternalLink } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { filialesService, getFileUrl } from '../services/pocketbase';
 
 export default function Filiales() {
-  const filiales = [
+  const defaultFiliales = [
     {
       name: "AB'YNNOV",
       badge: "AB'YNNOV AND CO",
@@ -62,6 +64,33 @@ export default function Filiales() {
       ]
     }
   ];
+
+  const [filiales, setFiliales] = useState(defaultFiliales);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const loadFiliales = async () => {
+      try {
+        setLoading(true);
+        const activeFiliales = await filialesService.getActive();
+        console.log('Active filiales loaded:', activeFiliales);
+        if (activeFiliales.length > 0) {
+          setFiliales([...defaultFiliales, ...activeFiliales]);
+        } else {
+          setFiliales(defaultFiliales);
+        }
+      } catch (err) {
+        console.error('Erreur chargement filiales:', err);
+        setError('Impossible de charger les filiales en direct. Affichage des filiales par défaut.');
+        setFiliales(defaultFiliales);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadFiliales();
+  }, []);
 
   return (
     <MainLayout>
@@ -418,6 +447,145 @@ export default function Filiales() {
           </div>
         </div>
       </section>
+
+      {/* Additional Filiales from PocketBase */}
+      {filiales.length > 2 && (
+        <section className="py-20 bg-gradient-to-b from-gray-50 to-white">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="mb-16 text-center">
+              <motion.h2
+                className="text-4xl font-bold text-gray-900 mb-4"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6 }}
+                viewport={{ once: true }}
+              >
+                Nos Partenaires Filiales
+              </motion.h2>
+              <div className="h-1 w-24 bg-intersec-green rounded-full mx-auto" />
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {filiales.slice(2).map((filiale, idx) => {
+                const isPocketBase = !!filiale.id;
+                const logoSrc = isPocketBase ? getFileUrl(filiale, 'logo_file') : filiale.logo;
+                const accentColor = filiale.accentColor || '#228B22';
+                const primaryColor = filiale.primaryColor || '#4A4A4A';
+                
+                return (
+                  <motion.div
+                    key={isPocketBase ? filiale.id : idx}
+                    className="flex flex-col rounded-2xl overflow-hidden shadow-md hover:shadow-lg transition-all duration-300 backdrop-blur-sm bg-white"
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: idx * 0.1 }}
+                    viewport={{ once: true }}
+                    whileHover={{ y: -8 }}
+                  >
+                    {/* Image Banner */}
+                    <div className="relative w-full h-48 overflow-hidden bg-gray-200">
+                      {logoSrc ? (
+                        <img
+                          src={logoSrc}
+                          alt={filiale.name}
+                          className="w-full h-full object-cover object-center transition-transform duration-300 hover:scale-110"
+                          onError={(e) => {
+                            e.target.src = '/partenariat/default-logo.png';
+                          }}
+                        />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-intersec-green/10 to-intersec-green/5">
+                          <span className="text-gray-400 text-sm font-medium">Logo</span>
+                        </div>
+                      )}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent" />
+                    </div>
+
+                    {/* Content */}
+                    <div className="p-6 flex flex-col flex-grow">
+                      {/* Badge */}
+                      {filiale.badge && (
+                        <div className="mb-3">
+                          <span 
+                            className="inline-block px-3 py-1 rounded-full text-xs font-bold tracking-widest"
+                            style={{ 
+                              backgroundColor: `${accentColor}15`,
+                              color: accentColor, 
+                              border: `1.5px solid ${accentColor}66` 
+                            }}
+                          >
+                            {filiale.badge}
+                          </span>
+                        </div>
+                      )}
+
+                      {/* Name */}
+                      <h3 
+                        className="text-2xl font-bold mb-2"
+                        style={{ color: accentColor }}
+                      >
+                        {filiale.name}
+                      </h3>
+
+                      {/* Location */}
+                      {filiale.location && (
+                        <div className="flex items-center gap-2 text-sm mb-3" style={{ color: primaryColor }}>
+                          <MapPin size={16} style={{ color: accentColor }} className="flex-shrink-0" />
+                          <span className="font-medium">{filiale.location}</span>
+                        </div>
+                      )}
+
+                      {/* Description */}
+                      <p className="text-sm leading-relaxed mb-4 p-3 rounded-lg" style={{ color: primaryColor, backgroundColor: `${accentColor}08` }}>
+                        {filiale.description}
+                      </p>
+
+                      {/* Domains */}
+                      {(filiale.domains || []).length > 0 && (
+                        <div className="mb-4">
+                          <p className="text-xs font-semibold uppercase tracking-widest mb-2" style={{ color: accentColor }}>
+                            Domaines
+                          </p>
+                          <div className="flex flex-wrap gap-1.5">
+                            {(Array.isArray(filiale.domains) 
+                              ? filiale.domains 
+                              : (filiale.domains || '').split(',').map(d => d.trim()).filter(Boolean)
+                            ).map((domain, i) => (
+                              <span
+                                key={i}
+                                className="text-xs px-2 py-1 rounded font-medium"
+                                style={{ 
+                                  backgroundColor: `${accentColor}10`,
+                                  color: accentColor
+                                }}
+                              >
+                                {domain}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Contact Info */}
+                      <div className="mt-auto pt-4 border-t" style={{ borderTopColor: `${accentColor}20` }}>
+                        {filiale.contact_email && (
+                          <p className="text-xs text-gray-600 mb-1">
+                            <span className="font-semibold">Email:</span> {filiale.contact_email}
+                          </p>
+                        )}
+                        {filiale.contact_phone && (
+                          <p className="text-xs text-gray-600">
+                            <span className="font-semibold">Tél:</span> {filiale.contact_phone}
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                  </motion.div>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* Stats */}
       <section className="py-20 bg-white">

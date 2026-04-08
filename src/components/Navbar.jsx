@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, Award, ChevronDown, Building2, Users, FileText, Briefcase, Heart, Phone } from 'lucide-react';
+import { Menu, X, Award, ChevronDown, Building2, Users, FileText, Briefcase, Heart, Phone, Calendar } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export default function Navbar() {
@@ -48,6 +48,7 @@ export default function Navbar() {
         { label: 'Notre entreprise', path: '/about', icon: Building2 },
         { label: 'Politique Qualité', path: '/quality', icon: Award },
         { label: 'Nos projets', path: '/projects', icon: Briefcase },
+        { label: 'Événements', path: '/events', icon: Calendar },
       ]
     },
     {
@@ -197,15 +198,7 @@ export default function Navbar() {
             })}
           </div>
 
-          {/* CTA Button */}
-          <div className="hidden md:block">
-            <Link
-              to="/contact"
-              className="bg-intersec-green hover:bg-intersec-dark text-white px-6 py-2 rounded-lg font-medium transition-colors"
-            >
-              Nous contacter
-            </Link>
-          </div>
+          {/* CTA Button - REMOVED to avoid duplication with Contact menu item */}
 
           {/* Mobile Menu Button */}
           <button

@@ -119,6 +119,122 @@ const servicesSchema = {
 };
 
 // ============================================
+// OPTIONAL: Collection pour les partenaires
+// ============================================
+
+const partnersSchema = {
+  id: "string",
+  name: {
+    type: "text",
+    required: true,
+    maxLength: 255
+  },
+  description: {
+    type: "text",
+    required: true
+  },
+  website: {
+    type: "text",
+    required: false
+  },
+  category: {
+    type: "text",
+    required: false
+  },
+  active: {
+    type: "bool",
+    defaultValue: true
+  },
+  logo_file: {
+    type: "file",
+    required: false,
+    maxSelect: 1,
+    maxSize: 5242880,
+    mimeTypes: ["image/png", "image/jpeg", "image/webp"]
+  },
+  created: {
+    type: "datetime",
+    autoNow: true
+  },
+  updated: {
+    type: "datetime",
+    autoNowUpdate: true
+  }
+};
+
+// ============================================
+// OPTIONAL: Collection pour les filiales
+// ============================================
+
+const filialesSchema = {
+  id: "string",
+  name: {
+    type: "text",
+    required: true,
+    maxLength: 255
+  },
+  badge: {
+    type: "text",
+    required: false
+  },
+  description: {
+    type: "text",
+    required: true
+  },
+  location: {
+    type: "text",
+    required: false
+  },
+  website: {
+    type: "text",
+    required: false
+  },
+  services: {
+    type: "text",
+    required: false
+  },
+  domains: {
+    type: "text",
+    required: false
+  },
+  details: {
+    type: "text",
+    required: false
+  },
+  contact_email: {
+    type: "email",
+    required: false
+  },
+  contact_phone: {
+    type: "text",
+    required: false
+  },
+  address: {
+    type: "text",
+    required: false
+  },
+  active: {
+    type: "bool",
+    defaultValue: true
+  },
+  logo_file: {
+    type: "file",
+    required: false,
+    maxSelect: 1,
+    maxSize: 5242880,
+    mimeTypes: ["image/png", "image/jpeg", "image/webp"]
+  },
+  created: {
+    type: "datetime",
+    autoNow: true
+  },
+  updated: {
+    type: "datetime",
+    autoNowUpdate: true
+  }
+};
+
+// ============================================
 // OPTIONAL: Collection pour les paramètres du site
 // ============================================
 

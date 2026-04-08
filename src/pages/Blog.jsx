@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import { Calendar, Clock, User, ArrowRight, Tag, Share2, Bookmark, Eye } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { getFileUrl, postsService } from '../services/pocketbase';
 
 const blogPosts = [
   {
@@ -185,10 +186,64 @@ const categories = ['Tous', 'IPM', 'Santé', 'Finance', 'Digital', 'RSE', 'Audit
 export default function Blog() {
   const [selectedCategory, setSelectedCategory] = useState('Tous');
   const [selectedPost, setSelectedPost] = useState(null);
+  const [dynamicPosts, setDynamicPosts] = useState([]);
+  const [loadingPosts, setLoadingPosts] = useState(true);
+  const [fetchError, setFetchError] = useState(null);
 
+  useEffect(() => {
+    const loadPosts = async () => {
+      setLoadingPosts(true);
+      setFetchError(null);
+      try {
+        const fetchedPosts = await postsService.getPublished();
+        const normalizedPosts = fetchedPosts.map((post) => ({
+          id: post.id,
+          title: post.title || 'Article sans titre',
+          excerpt: post.excerpt || '',
+          content: post.content || '',
+          author: post.author || 'Équipe Intersec',
+          date: post.date || (post.created ? new Date(post.created).toLocaleDateString('fr-FR') : ''),
+          readTime: post.readTime || post.read_time || '5 min',
+          category: post.category || 'Actualité',
+          tags: typeof post.tags === 'string'
+            ? post.tags.split(',').map(tag => tag.trim()).filter(Boolean)
+            : Array.isArray(post.tags)
+              ? post.tags
+              : [],
+          image: getFileUrl(post, 'image_file') || getFileUrl(post, 'image') || '/api/placeholder/600/400',
+          views: post.views || post.views_count || 0
+        }));
+        setDynamicPosts(normalizedPosts);
+      } catch (error) {
+        setFetchError('Impossible de charger les articles depuis la base de données.');
+        setDynamicPosts([]);
+      } finally {
+        setLoadingPosts(false);
+      }
+    };
+
+    loadPosts();
+  }, []);
+
+  const allPosts = [...blogPosts, ...dynamicPosts];
   const filteredPosts = selectedCategory === 'Tous'
-    ? blogPosts
-    : blogPosts.filter(post => post.category === selectedCategory);
+    ? allPosts
+    : allPosts.filter(post => post.category === selectedCategory);
+
+  const handlePostOpen = async (post) => {
+    setSelectedPost(post);
+    // Incrémenter les vues si c'est un article PocketBase
+    if (post.id && post.id.length > 1) {
+      const updated = await postsService.incrementViews(post.id);
+      if (updated) {
+        // Mettre à jour l'affichage avec le nouveau compteur
+        setSelectedPost(prev => ({
+          ...prev,
+          views: updated.views || prev.views
+        }));
+      }
+    }
+  };
 
   if (selectedPost) {
     return (
@@ -296,6 +351,16 @@ export default function Blog() {
             Analyses approfondies, études de cas et conseils d'experts en protection sociale,
             ressources humaines et management d'entreprise.
           </p>
+          {fetchError && (
+            <div className="max-w-3xl mx-auto mt-6 rounded-lg bg-red-50 border border-red-200 px-4 py-3 text-sm text-red-700">
+              {fetchError}
+            </div>
+          )}
+          {loadingPosts && (
+            <div className="max-w-3xl mx-auto mt-6 text-sm text-gray-500">
+              Chargement des articles depuis la base de données...
+            </div>
+          )}
         </motion.div>
 
         {/* Category Filter */}
@@ -336,7 +401,7 @@ export default function Blog() {
               exit={{ opacity: 0, scale: 0.9 }}
               whileHover={{ y: -8 }}
               className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 group cursor-pointer"
-              onClick={() => setSelectedPost(post)}
+              onClick={() => handlePostOpen(post)}
             >
               <div className="h-48 bg-gradient-to-br from-emerald-400 to-teal-500 relative overflow-hidden">
                 <div className="absolute inset-0 bg-black/10 group-hover:bg-black/20 transition" />

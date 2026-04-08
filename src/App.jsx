@@ -12,7 +12,9 @@ import Contact from './pages/Contact';
 import Quality from './pages/Quality';
 import IPM from './pages/IPM';
 import Blog from './pages/Blog';
+import EventsPage from './pages/Events';
 import IntersecAdminPage from './pages/AdminPanel';
+import GeneralAdminPanel from './pages/GeneralAdminPanel';
 
 // AB'YNNOV
 import ABYnniovLayout from './filiales/ab-ynnov/layout/Layout';
@@ -59,6 +61,7 @@ function App() {
         <Route path="/services/consulting" element={<MainLayout><ServiceDetail serviceId="consulting" /></MainLayout>} />
         <Route path="/services/risk-management" element={<MainLayout><ServiceDetail serviceId="risk-management" /></MainLayout>} />
         <Route path="/services/performance" element={<MainLayout><ServiceDetail serviceId="performance" /></MainLayout>} />
+        <Route path="/events" element={<MainLayout><EventsPage /></MainLayout>} />
         <Route path="/ipm" element={<MainLayout><IPM /></MainLayout>} />
         <Route path="/blog" element={<MainLayout><Blog /></MainLayout>} />
         <Route path="/quality" element={<MainLayout><Quality /></MainLayout>} />
@@ -69,6 +72,9 @@ function App() {
         
         {/* Admin Intersec */}
         <Route path="/admin" element={<IntersecAdminPage />} />
+        
+        {/* Admin Général */}
+        <Route path="/admin-general" element={<GeneralAdminPanel />} />
 
         {/* AB'YNNOV Routes */}
         <Route path="/filiales/ab-ynnov" element={<ABYnniovLayout />}>

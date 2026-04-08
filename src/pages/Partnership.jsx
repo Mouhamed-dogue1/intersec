@@ -1,7 +1,9 @@
 import { motion } from 'framer-motion';
+import { useEffect, useState } from 'react';
 import MainLayout from '../layout/MainLayout';
 import ContactForm from '../components/ContactForm';
 import { Briefcase, DollarSign, Users, Zap } from 'lucide-react';
+import { partnersService, getFileUrl } from '../services/pocketbase';
 
 const OpportunityCard = ({ icon: Icon, title, description, emoji }) => {
   return (
@@ -59,6 +61,44 @@ export default function Partnership() {
     "Opportunités de croissance mutuelles et durables"
   ];
 
+  const [partners, setPartners] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  const defaultPartners = [
+    { name: 'Ceforép', logo: 'ceforep.png', description: 'Formation & développement' },
+    { name: 'Oryx', logo: 'oryx.png', description: 'Logistique & mobilité' },
+    { name: 'PAC FP', logo: 'pac-fp.png', description: 'Services financiers' },
+    { name: 'Population Council', logo: 'populationcouncil.png', description: 'Innovation sociale' },
+    { name: 'Promasidor', logo: 'promasidor.jpg', description: 'Produits de consommation' },
+    { name: 'Puma', logo: 'puma.jpg', description: 'Image de marque & retail' },
+    { name: 'Senstock', logo: 'senstock.webp', description: 'Stockage & distribution' },
+    { name: 'Total', logo: 'total.webp', description: 'Énergie & services' },
+    { name: 'Vivo', logo: 'vivo.jpg', description: 'Expérience client' }
+  ];
+
+  useEffect(() => {
+    const loadPartners = async () => {
+      try {
+        setLoading(true);
+        const activePartners = await partnersService.getActive();
+        if (activePartners.length > 0) {
+          setPartners([...defaultPartners, ...activePartners]);
+        } else {
+          setPartners(defaultPartners);
+        }
+      } catch (err) {
+        console.error('Erreur chargement partenaires:', err);
+        setError('Impossible de charger les partenaires en direct. Affichage des partenaires par défaut.');
+        setPartners(defaultPartners);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadPartners();
+  }, []);
+
   return (
     <MainLayout>
       <div className="pt-16"></div>
@@ -91,8 +131,113 @@ export default function Partnership() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.1 }}
           >
-            Nous recherchons des partenaires visionnaires pour accélérer notre croissance et maximiser nos impacts collectifs
+            Nous recherchons des partenaires visionnaires pour accélérer notre croissance et maximiser nos impacts collectifs.
           </motion.p>
+          <motion.p
+            className="text-lg md:text-xl text-white/80 max-w-2xl mx-auto mt-6 italic border border-white/20 bg-white/10 rounded-3xl py-6 px-8"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+          >
+            « La qualité d’une mission, la fluidité d’un partenariat »
+          </motion.p>
+        </div>
+      </section>
+
+      {/* Partner Logos Showcase */}
+      <section className="py-24 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            className="text-center mb-12"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+          >
+            <p className="text-sm uppercase tracking-[0.35em] text-intersec-green font-semibold mb-3">
+              Nos Partenaires
+            </p>
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900">
+              Une alliance de confiance pour des projets ambitieux
+            </h2>
+            <p className="text-gray-600 max-w-2xl mx-auto mt-4">
+              Nous accompagnons nos clients en collaboration avec des entreprises reconnues pour leur sérieux et leur engagement.
+            </p>
+          </motion.div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            {partners.map((partner, index) => {
+              const isPocketBasePartner = !!partner.id;
+              const logoSrc = isPocketBasePartner ? getFileUrl(partner, 'logo_file') : `/partenariat/${partner.logo}`;
+              const partnerKey = isPocketBasePartner ? partner.id : partner.logo;
+              return (
+                <motion.div
+                  key={partnerKey}
+                  className="relative overflow-hidden rounded-[24px] border border-white/70 bg-gradient-to-br from-white via-white/90 to-gray-100 shadow-[0_22px_60px_-36px_rgba(15,23,42,0.32)] transition-transform duration-300 hover:-translate-y-2 hover:shadow-[0_30px_80px_-38px_rgba(15,23,42,0.32)] h-full"
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: index * 0.08 }}
+                  viewport={{ once: true }}
+                >
+                  {/* Animated light points around the border - ENHANCED BRIGHT THEME */}
+                  <motion.div
+                    className="absolute inset-0 rounded-[24px] pointer-events-none"
+                    style={{
+                      background: `conic-gradient(from 0deg,
+                        transparent 0deg,
+                        rgba(34, 139, 34, 0.9) 8deg,
+                        rgba(16, 185, 129, 1) 15deg,
+                        rgba(34, 139, 34, 0.9) 22deg,
+                        transparent 30deg,
+                        transparent 330deg,
+                        rgba(34, 139, 34, 0.9) 338deg,
+                        rgba(16, 185, 129, 1) 345deg,
+                        rgba(34, 139, 34, 0.9) 352deg,
+                        transparent 360deg
+                      )`
+                    }}
+                    animate={{ rotate: 360 }}
+                    transition={{ duration: 7, repeat: Infinity, ease: 'linear' }}
+                  />
+                  <motion.div
+                    className="absolute inset-0 rounded-[24px] pointer-events-none"
+                    style={{
+                      background: `conic-gradient(from 180deg,
+                        transparent 0deg,
+                        rgba(255, 215, 0, 0.8) 12deg,
+                        rgba(255, 255, 255, 1) 18deg,
+                        rgba(255, 215, 0, 0.8) 24deg,
+                        transparent 30deg,
+                        transparent 330deg,
+                        rgba(255, 215, 0, 0.8) 336deg,
+                        rgba(255, 255, 255, 1) 342deg,
+                        rgba(255, 215, 0, 0.8) 348deg,
+                        transparent 354deg
+                      )`
+                    }}
+                    animate={{ rotate: -360 }}
+                    transition={{ duration: 9, repeat: Infinity, ease: 'linear' }}
+                  />
+                  <div className="relative p-6 flex flex-col items-center justify-between h-full min-h-[320px] gap-3 bg-gradient-to-br from-white/95 via-white/90 to-gray-50/95 backdrop-blur-xl border border-white/60 shadow-inner">
+                    <img
+                      src={logoSrc}
+                      alt={partner.name}
+                      className="max-h-24 w-full max-w-[200px] object-contain filter saturate-150 contrast-125 brightness-110"
+                      onError={(e) => {
+                        e.target.src = '/partenariat/default-logo.png';
+                      }}
+                    />
+                    <span className="inline-flex items-center justify-center rounded-full bg-intersec-green/10 px-3 py-2 text-sm font-semibold text-intersec-green whitespace-normal break-words text-center">
+                      {partner.name}
+                    </span>
+                    <p className="text-sm text-gray-500 tracking-tight text-center whitespace-normal break-words max-h-[4.5rem] overflow-hidden">
+                      {partner.description}
+                    </p>
+                  </div>
+                </motion.div>
+              );
+            })}
+          </div>
         </div>
       </section>
 

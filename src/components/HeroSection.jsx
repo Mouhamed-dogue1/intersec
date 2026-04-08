@@ -58,10 +58,19 @@ export default function HeroSection() {
         </motion.h1>
 
         <motion.p
+          className="text-2xl md:text-3xl text-white/90 font-semibold italic mb-6 max-w-4xl mx-auto leading-relaxed"
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1, delay: 0.35 }}
+        >
+          « La qualité d’une mission, la fluidité d’un partenariat »
+        </motion.p>
+
+        <motion.p
           className="text-lg md:text-xl text-white/80 mb-12 max-w-3xl mx-auto leading-relaxed"
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 0.4 }}
+          transition={{ duration: 1, delay: 0.45 }}
         >
           Excellence opérationnelle, innovation constante et partenariat durable au cœur d'une Afrique en croissance.
         </motion.p>
