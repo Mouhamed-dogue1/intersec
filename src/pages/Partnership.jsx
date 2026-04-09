@@ -219,14 +219,16 @@ export default function Partnership() {
                     transition={{ duration: 9, repeat: Infinity, ease: 'linear' }}
                   />
                   <div className="relative p-6 flex flex-col items-center justify-between h-full min-h-[320px] gap-3 bg-gradient-to-br from-white/95 via-white/90 to-gray-50/95 backdrop-blur-xl border border-white/60 shadow-inner">
-                    <img
-                      src={logoSrc}
-                      alt={partner.name}
-                      className="max-h-24 w-full max-w-[200px] object-contain filter saturate-150 contrast-125 brightness-110"
-                      onError={(e) => {
-                        e.target.src = '/partenariat/default-logo.png';
-                      }}
-                    />
+                    <div className="w-32 h-32 bg-white rounded-lg p-2 flex items-center justify-center">
+                      <img
+                        src={logoSrc}
+                        alt={partner.name}
+                        className="w-full h-full object-contain"
+                        onError={(e) => {
+                          e.target.src = '/partenariat/default-logo.png';
+                        }}
+                      />
+                    </div>
                     <span className="inline-flex items-center justify-center rounded-full bg-intersec-green/10 px-3 py-2 text-sm font-semibold text-intersec-green whitespace-normal break-words text-center">
                       {partner.name}
                     </span>
